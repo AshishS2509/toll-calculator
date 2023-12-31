@@ -3,7 +3,8 @@ import { useEffect, useRef, useState } from "react";
 
 const mapplsClassObject = new mappls();
 
-const Map = () => {
+const Map = (props) => {
+  console.log(props)
   const map = useRef(null);
   const [MapLoaded, setMapLoaded] = useState(false);
 
@@ -18,15 +19,14 @@ const Map = () => {
         map.current = mapplsClassObject.Map({
           id: "map",
           properties: {
-            center: [28.544, 77.5454],
+            center: [props.latitude, props.longitude],
             draggable: true,
-            zoom: 5,
-            minZoom: 8,
+            zoom: 9,
+            minZoom: 9,
             maxZoom: 15,
             backgroundColor: "#fff",
             traffic: true,
             geolocation: false,
-            
             disableDoubleClickZoom: true,
             fullscreenControl: true, 
             scrollWheel: true, 
@@ -43,10 +43,10 @@ const Map = () => {
         });
       }
     );
-  }, []);
+  }, [props.latitude, props.longitude]);
 
   return (
-    <div id="map" className=" d-inline-block ratio-4x3 col-8">
+    <div id="map" className=" d-inline-block ratio-4x3 col-lg-8">
       {MapLoaded}
     </div>
   );
