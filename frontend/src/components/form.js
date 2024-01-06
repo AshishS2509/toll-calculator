@@ -29,7 +29,7 @@ const Form = () => {
         required
       />
       <div className="form-group row">
-        <div className="offset-4 col-8">
+        <div className="offset-4 col col-8">
           <button name="submit" type="submit" className="btn btn-primary">
             Submit
           </button>

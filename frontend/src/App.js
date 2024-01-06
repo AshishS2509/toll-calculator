@@ -21,7 +21,7 @@ function App() {
 
   return (
     <div className="d-grid d-sm-flex container full align-items-center">
-      <div className="row p-5 full">
+      <div className="row p-5 full mx-auto ">
           <Form />
           <Map latitude = {lat} longitude = {lon} />
       </div>

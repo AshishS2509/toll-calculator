@@ -1,5 +1,6 @@
 import { mappls } from "mappls-web-maps";
 import { useEffect, useRef, useState } from "react";
+const key = process.env.REACT_APP_MAP_MY_INDIA;
 
 const mapplsClassObject = new mappls();
 
@@ -10,7 +11,7 @@ const Map = (props) => {
 
   useEffect(() => {
     mapplsClassObject.initialize(
-      "4f469f8a7c8ceef9fa8abb1919846775",
+      key,
       { map: true },
       () => {
         if (map.current) {
@@ -46,7 +47,7 @@ const Map = (props) => {
   }, [props.latitude, props.longitude]);
 
   return (
-    <div id="map" className=" d-inline-block ratio-4x3 col-lg-8">
+    <div id="map" className=" d-inline-block col col-lg-8">
       {MapLoaded}
     </div>
   );
