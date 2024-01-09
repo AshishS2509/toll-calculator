@@ -4,24 +4,23 @@ import Form from "./components/form";
 import Map from "./components/map";
 
 function App() {
-
       
   const [lat, setLat] = useState(0);
   const [lon, setLon] = useState(0);
 
-  // Fetching the API once when the component is mounted
+
   useEffect(() => {
-    fetch('https://ipapi.co/json/').then(data => data.json()).then(res => {
-      console.log(res)
-      setLat(res.latitude);
-      setLon(res.longitude);
-    });
-  }, [lat, lon]);
+    navigator.geolocation.getCurrentPosition((position) => {
+      setLat(position.coords.latitude) 
+      setLon(position.coords.longitude)
+  }, (error) => {
+    console.log(error)
+  }, [{enableHighAccuracy: true}])}, []);
 
 
   return (
-    <div className="d-grid d-sm-flex container full align-items-center">
-      <div className="row p-5 full mx-auto ">
+    <div className="d-flex container full align-items-center m-0 p-0">
+      <div className="row py-5 full mx-auto">
           <Form />
           <Map latitude = {lat} longitude = {lon} />
       </div>

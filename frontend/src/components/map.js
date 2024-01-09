@@ -1,11 +1,10 @@
 import { mappls } from "mappls-web-maps";
 import { useEffect, useRef, useState } from "react";
-const key = process.env.REACT_APP_MAP_MY_INDIA;
+const key = process.env.REACT_APP_MAP_MY_INDIA_API;
 
 const mapplsClassObject = new mappls();
 
 const Map = (props) => {
-  console.log(props)
   const map = useRef(null);
   const [MapLoaded, setMapLoaded] = useState(false);
 
@@ -22,8 +21,8 @@ const Map = (props) => {
           properties: {
             center: [props.latitude, props.longitude],
             draggable: true,
-            zoom: 9,
-            minZoom: 9,
+            zoom: 6,
+            minZoom: 2,
             maxZoom: 15,
             backgroundColor: "#fff",
             traffic: true,
@@ -47,7 +46,7 @@ const Map = (props) => {
   }, [props.latitude, props.longitude]);
 
   return (
-    <div id="map" className=" d-inline-block col col-lg-8">
+    <div id="map" className="d-inline-block col col-lg-8">
       {MapLoaded}
     </div>
   );
