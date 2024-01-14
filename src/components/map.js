@@ -21,21 +21,12 @@ const Map = (props) => {
           properties: {
             center: [props.latitude, props.longitude],
             draggable: true,
-            zoom: 6,
+            zoom: 8,
             minZoom: 2,
             maxZoom: 15,
             backgroundColor: "#fff",
-            traffic: true,
-            geolocation: false,
-            disableDoubleClickZoom: true,
-            fullscreenControl: true, 
-            scrollWheel: true, 
-            scrollZoom: true, 
-            rotateControl: true,
-            scaleControl: true,
-            zoomControl: true,
-            clickableIcons: true,
-            tilt: 0,
+            traffic: false,
+            geolocation: true,
           },
         });
         map.current.on("load", () => {
@@ -44,6 +35,7 @@ const Map = (props) => {
       }
     );
   }, [props.latitude, props.longitude]);
+
 
   return (
     <div id="map" className="d-inline-block col col-lg-8">
