@@ -2,9 +2,14 @@ import React from "react";
 import Input from "./input";
 
 const Form = () => {
+
+  const handelSubmit = (event) => {
+    event.preventDefault();
+  }
+
   return (
     <div className="col-lg-4">
-      <form>
+      <form onSubmit={handelSubmit}>
       <Input
         label="Origin"
         name="origin"
