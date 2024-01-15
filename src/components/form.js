@@ -14,7 +14,7 @@ const Form = () => {
         label="Origin"
         name="origin"
         placeholder="Start"
-        iconClass="fa fa-map-marker"
+        iconClass="bi bi-geo-alt-fill"
         helpText="Enter Origin"
         required
       />
@@ -22,14 +22,14 @@ const Form = () => {
         label="Waypoint"
         name="waypoint"
         placeholder="Waypoint (optional)"
-        iconClass="fa fa-map-pin"
+        iconClass="bi bi-geo"
         helpText="Enter Interim Stop."
       />
       <Input
         label="Destination"
         name="destination"
         placeholder="Destination"
-        iconClass="fa fa-map-marker"
+        iconClass="bi bi-geo-alt-fill"
         helpText="Enter Destination"
         required
       />

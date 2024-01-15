@@ -2,21 +2,21 @@ import { mappls } from "mappls-web-maps";
 import { useEffect, useRef, useState } from "react";
 const key = process.env.REACT_APP_MAP_MY_INDIA_API;
 
-const mapplsClassObject = new mappls();
+const mapplesMap = new mappls();
 
 const Map = (props) => {
   const map = useRef(null);
   const [MapLoaded, setMapLoaded] = useState(false);
 
   useEffect(() => {
-    mapplsClassObject.initialize(
+    mapplesMap.initialize(
       key,
       { map: true },
       () => {
         if (map.current) {
           map.current.remove();
         }
-        map.current = mapplsClassObject.Map({
+        map.current = mapplesMap.Map({
           id: "map",
           properties: {
             center: [props.latitude, props.longitude],
@@ -26,7 +26,7 @@ const Map = (props) => {
             maxZoom: 15,
             backgroundColor: "#fff",
             traffic: false,
-            geolocation: true,
+            geolocation: false,
           },
         });
         map.current.on("load", () => {
@@ -34,7 +34,8 @@ const Map = (props) => {
         });
       }
     );
-  }, [props.latitude, props.longitude]);
+    
+  }, [MapLoaded, props.latitude, props.longitude]);
 
 
   return (

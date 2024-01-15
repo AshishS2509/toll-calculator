@@ -1,7 +1,23 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
+const key = process.env.REACT_APP_MAP_MY_INDIA_API;
 
 const Input = ({ label, name, placeholder, iconClass, helpText, required }) => {
   const suggestions = ["Item 1", "Item 2", "Item 3"];
+  const [lat, setLat] = useState(0);
+  const [lon, setLon] = useState(0);
+
+  useEffect(() => {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setLat(position.coords.latitude);
+          setLon(position.coords.longitude);
+        },
+        (error) => {
+          console.log(error);
+        },
+        [{ enableHighAccuracy: true }]
+      )
+  }, []);
 
   const [input, setInput] = useState("");
   const [isFocused, setIsFocused] = useState(false);
@@ -19,6 +35,13 @@ const Input = ({ label, name, placeholder, iconClass, helpText, required }) => {
     setInput(suggestions[index]);
     setIsFocused(false);
   };
+  const handelCurrentLocation = async() =>{
+    console.log(lat, lon)
+    const url = `https://apis.mappls.com/advancedmaps/v1/${key}/rev_geocode?lat=${lat}&lng=${lon}&region=IND`
+    const data = await fetch(url);
+    const res = await data.json()
+    console.log(res.results[0])
+  }
 
   return (
     <div className="form-group row pb-4">
@@ -47,7 +70,8 @@ const Input = ({ label, name, placeholder, iconClass, helpText, required }) => {
           />
 
           {isFocused && (
-            <ul className="list-group position-absolute w-100 top-100 z-3" style={{cursor: "pointer"}}>
+            <ul className="list-group position-absolute w-100 top-100 z-3" style={{ cursor: "pointer" }}>
+              <li key={0} className="list-group-item fw-semibold text-primary" onMouseDown={handelCurrentLocation}><i className="bi bi-crosshair"></i> Current City</li>
               {suggestions.map((item, index) => (
                 <li
                   key={index}
