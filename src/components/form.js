@@ -8,7 +8,7 @@ const Form = () => {
   }
 
   return (
-    <div className="col-lg-4">
+    <div className="col-lg-5">
       <form onSubmit={handelSubmit}>
       <Input
         label="Origin"

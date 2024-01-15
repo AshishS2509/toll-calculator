@@ -47,7 +47,7 @@ const Input = ({ label, name, placeholder, iconClass, helpText, required }) => {
           />
 
           {isFocused && (
-            <ul className="list-group position-absolute w-100 top-100 z-3 " style={{cursor: "pointer"}}>
+            <ul className="list-group position-absolute w-100 top-100 z-3" style={{cursor: "pointer"}}>
               {suggestions.map((item, index) => (
                 <li
                   key={index}

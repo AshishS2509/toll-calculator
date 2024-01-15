@@ -38,7 +38,7 @@ const Map = (props) => {
 
 
   return (
-    <div id="map" className="d-inline-block col col-lg-8">
+    <div id="map" className="d-inline-block col col-lg-7">
       {MapLoaded}
     </div>
   );
