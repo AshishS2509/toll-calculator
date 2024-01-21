@@ -1,9 +1,10 @@
 import React from "react";
 import Input from "./input";
 
-const Form = () => {
+const Form = (props) => {
 
   const handelSubmit = (event) => {
+    props.handelSubmit();
     event.preventDefault();
   }
 
@@ -16,6 +17,7 @@ const Form = () => {
         placeholder="Start"
         iconClass="bi bi-geo-alt-fill"
         helpText="Enter Origin"
+        handelMarker={props.handelSource}
         required
       />
       <Input
@@ -24,6 +26,7 @@ const Form = () => {
         placeholder="Waypoint (optional)"
         iconClass="bi bi-geo"
         helpText="Enter Interim Stop."
+
       />
       <Input
         label="Destination"
@@ -31,6 +34,7 @@ const Form = () => {
         placeholder="Destination"
         iconClass="bi bi-geo-alt-fill"
         helpText="Enter Destination"
+        handelMarker={props.handelDestination}
         required
       />
       <div className="form-group row">

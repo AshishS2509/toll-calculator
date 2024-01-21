@@ -1,11 +1,11 @@
 import { City } from "country-state-city";
 import React, { useState } from "react";
 
-const Input = ({ label, name, placeholder, iconClass, helpText, required }) => {
+const Input = ({ label, name, placeholder, iconClass, helpText, required, handelMarker }) => {
   const [input, setInput] = useState("");
   const [isFocused, setIsFocused] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
-
+  
   const countryData = City.getCitiesOfCountry("IN");
 
   const handelInput = async (event) => {
@@ -13,8 +13,7 @@ const Input = ({ label, name, placeholder, iconClass, helpText, required }) => {
     const filteredCities = countryData.filter((city) =>
       city.name.toLowerCase().includes(event.target.value.toLowerCase())
     );
-    const name = filteredCities.map(({ name }) => name);
-    setSuggestions(name);
+    setSuggestions(filteredCities);
   };
   const handleInputFocus = () => {
     setIsFocused(true);
@@ -22,8 +21,10 @@ const Input = ({ label, name, placeholder, iconClass, helpText, required }) => {
   const handelInputBlur = () => {
     setIsFocused(false);
   };
-  const handelList = (index) => {
-    setInput(suggestions[index]);
+  const handelList = async (index) => {
+    const value = suggestions[index];
+    handelMarker && handelMarker(value.name + ", " + value.stateCode + ", " + value.countryCode)
+    setInput(value.name + ", " + value.stateCode );
     setIsFocused(false);
   };
 
@@ -55,17 +56,17 @@ const Input = ({ label, name, placeholder, iconClass, helpText, required }) => {
 
           {isFocused && (
             <ul
-              className="list-group position-absolute w-100 top-100 z-3"
-              style={{ cursor: "pointer" }}
+              className="list-group position-absolute w-100 top-100 z-3 overflow-y-scroll border border-gray"
+              style={{ cursor: "pointer", maxHeight:"200px" }}
             >
               {/* <li key={0} className="list-group-item fw-semibold text-primary" onMouseDown={handelCurrentLocation}><i className="bi bi-crosshair"></i> Current City</li> */}
               {suggestions.map((item, index) => (
                 <li
                   key={index}
-                  className="list-group-item"
+                  className="list-group-item w-100"
                   onMouseDown={() => handelList(index)}
                 >
-                  {item}
+                  {item.name + ", " + item.stateCode}
                 </li>
               ))}
             </ul>

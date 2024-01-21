@@ -1,12 +1,11 @@
 import { mappls } from "mappls-web-maps";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 const key = process.env.REACT_APP_MAP_MY_INDIA_API;
 
 const mapplesMap = new mappls();
 
 const Map = (props) => {
   const map = useRef(null);
-  const [MapLoaded, setMapLoaded] = useState(false);
 
   useEffect(() => {
     mapplesMap.initialize(
@@ -25,22 +24,14 @@ const Map = (props) => {
             minZoom: 2,
             maxZoom: 15,
             backgroundColor: "#fff",
-            traffic: false,
-            geolocation: false,
           },
-        });
-        map.current.on("load", () => {
-          setMapLoaded(true);
         });
       }
     );
-    
-  }, [MapLoaded, props.latitude, props.longitude]);
-
+  }, [props.latitude, props.longitude, props.marker]);
 
   return (
     <div id="map" className="d-inline-block col col-lg-7">
-      {MapLoaded}
     </div>
   );
 };
