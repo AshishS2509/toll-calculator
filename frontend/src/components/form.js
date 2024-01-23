@@ -10,7 +10,7 @@ const Form = (props) => {
 
   return (
     <div className="col-lg-5">
-      <form onSubmit={handelSubmit}>
+      <form>
       <Input
         label="Origin"
         name="origin"
@@ -39,7 +39,7 @@ const Form = (props) => {
       />
       <div className="form-group row">
         <div className="offset-4 col col-8">
-          <button name="submit" type="submit" className="btn btn-primary">
+          <button name="submit" type="submit" className="btn btn-primary" onClick={handelSubmit}>
             Submit
           </button>
         </div>
