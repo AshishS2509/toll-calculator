@@ -36,6 +36,9 @@ This is a Toll Calculator Web Application built using React and Bootstrap, lever
     cd frontend
     npm install
 
+    cd backend
+    npm install
+
 3. **Configure APIs:**
     ```bash
     # Map My India API Key
@@ -45,7 +48,11 @@ This is a Toll Calculator Web Application built using React and Bootstrap, lever
 
 4. **Run the Application:**
     ```bash
+    cd frontend
     npm start
+
+    cd backend
+    npm index.js
 
 5. **Access the Application:**
     Open your web browser and navigate to http://localhost:3000.
