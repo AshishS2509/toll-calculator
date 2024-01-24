@@ -1,18 +1,20 @@
 import express from 'express'
 import bodyParser from 'body-parser';
+import cors from 'cors'
 import * as dotnet from 'dotenv';
 dotnet.config();
 const app = express();
 const port = 3001;
 const key = process.env.TOLL_GURU_API_KEY;
 
+app.use(cors());
 app.use(bodyParser.json());
 
 app.post('/getData', async (req, res) => {
-    console.log(req.body)
+    
     const data = {
-        from: { address: 'Nashik, MH, IN', lat: 19.99727000, lng: 73.79096000 },
-        to: { address: 'Pune, MH, IN', lat: 18.51957000, lng: 73.85535000 },
+        from: req.body.from,
+        to: req.body.to,
         waypoints: [],
         serviceProvider: 'mapmyindia',
         vehicle: {
@@ -24,7 +26,7 @@ app.post('/getData', async (req, res) => {
           emissionClass: 'euro_5',
         },
       };
-      
+
       try {
         const response = await fetch('https://apis.tollguru.com/toll/v2/origin-destination-waypoints', {
           method: 'POST',
@@ -42,7 +44,6 @@ app.post('/getData', async (req, res) => {
         res.status(500).send({ error: 'Internal Server Error' });
       }
     });
-
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
