@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { mappls } from "mappls-web-maps";
 import { useEffect, useRef, useState } from "react";
+import polyline from "@mapbox/polyline";
 const key = process.env.REACT_APP_MAP_MY_INDIA_API;
 
 const mapplsClassObject = new mappls();
@@ -8,7 +9,7 @@ const mapplsClassObject = new mappls();
 const Map = (props) => {
   const map = useRef(null);
   const [isMapLoaded, setIsMapLoaded] = useState(false);
-
+  // const [polylineDecoded, setPolylineDecoed] = useState([]);
 
   useEffect(() => {
     mapplsClassObject.initialize(key, { map: true }, () => {
@@ -39,7 +40,15 @@ const Map = (props) => {
         setIsMapLoaded(true);
       });
     });
-  }, [props.latitude, props.longitude]);
+
+    const decoder = props.polyline.map(item => polyline.decode(item))
+    // const obj = decoder.map(item => item.map(([lat, lng]) => ({lat:lat, lng:lng})));
+    console.log(decoder)
+    // obj.map(item=>mapplsClassObject.Polyline({
+    //   map: map,
+    //   polyline: item
+    // }))
+  }, [props.latitude, props.longitude, props.polyline]);
 
   return (
     <div id="map" className="d-inline-block col col-lg-7">

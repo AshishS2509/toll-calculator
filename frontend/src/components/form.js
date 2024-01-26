@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import Input from "./input";
 
-const Form = () => {
+const Form = (props) => {
 
   const [source, setSource] = useState({});
   const [destination, setDestination] = useState({});
@@ -30,7 +30,8 @@ const Form = () => {
       });
       
       const responseData = await response.json();
-      console.log('API Response:', responseData);
+      const polyline = responseData.routes.map(item => item.polyline)
+      props.polyline(polyline);
     } catch (error) {
       console.error('API Error:', error);
     }
@@ -54,7 +55,6 @@ const Form = () => {
         placeholder="Waypoint (optional)"
         iconClass="bi bi-geo"
         helpText="Enter Interim Stop."
-
       />
       <Input
         label="Destination"
