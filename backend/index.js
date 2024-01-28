@@ -16,9 +16,9 @@ app.post('/getData', async (req, res) => {
         from: req.body.from,
         to: req.body.to,
         waypoints: [],
-        serviceProvider: 'mapmyindia',
+        serviceProvider: 'here',
         vehicle: {
-          type: '2AxlesTaxi',
+          type: '2AxlesAuto',
           weight: { value: 20000, unit: 'pound' },
           height: { value: 7.5, unit: 'meter' },
           length: { value: 7.5, unit: 'meter' },

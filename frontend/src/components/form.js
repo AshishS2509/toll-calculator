@@ -5,6 +5,7 @@ const Form = (props) => {
 
   const [source, setSource] = useState({});
   const [destination, setDestination] = useState({});
+  const [points, setPoints] = useState({});
   
   const handelSource = (name, lat, lon) => {
     setSource({ address: name, lat: lat, lng: lon });
@@ -12,12 +13,16 @@ const Form = (props) => {
   const handelDestination = (name, lat, lon) => {
     setDestination({ address: name, lat: lat, lng: lon });
   };
+  const handelPoints = (name, lat, lon) => {
+    setPoints({ address: name, lat: lat, lng: lon })
+  }
 
   const handelSubmit = async (event) => {
     event.preventDefault();
     const data = {
       from:source,
-      to:destination
+      to:destination,
+      waypoints:points
     }
 
     try {
@@ -55,6 +60,7 @@ const Form = (props) => {
         placeholder="Waypoint (optional)"
         iconClass="bi bi-geo"
         helpText="Enter Interim Stop."
+        handelMarker={handelPoints}
       />
       <Input
         label="Destination"
