@@ -6,7 +6,8 @@ const Form = (props) => {
   const [source, setSource] = useState({});
   const [destination, setDestination] = useState({});
   const [points, setPoints] = useState({});
-  const [responseData, setResponseData] = useState([])
+  const [responseData, setResponseData] = useState({})
+  const [loading, setLoading] = useState(false)
   
   const handelSource = (name, lat, lon) => {
     setSource({ address: name, lat: lat, lng: lon });
@@ -36,6 +37,7 @@ const Form = (props) => {
       });
       
       setResponseData(await response.json());
+      setLoading(true)
     } catch (error) {
       console.error('API Error:', error);
     }
@@ -79,7 +81,7 @@ const Form = (props) => {
       </div>
       </form>
 
-      <div className="container mt-4 border py-2">
+        {loading && <div className="container mt-4 border py-2">
           <div className="px-4 mx-auto ">
             <h5 className="mt-2">Distance</h5>
             <div>
@@ -102,7 +104,7 @@ const Form = (props) => {
           </div>        
 
         {console.log(responseData)}
-      </div>
+      </div>}
     </div>
   );
 };
