@@ -6,6 +6,7 @@ const Form = (props) => {
   const [source, setSource] = useState({});
   const [destination, setDestination] = useState({});
   const [points, setPoints] = useState({});
+  const [responseData, setResponseData] = useState([])
   
   const handelSource = (name, lat, lon) => {
     setSource({ address: name, lat: lat, lng: lon });
@@ -34,9 +35,7 @@ const Form = (props) => {
         body: JSON.stringify(data)
       });
       
-      const responseData = await response.json();
-      const polyline = responseData.routes.map(item => item.polyline)
-      props.polyline(polyline);
+      setResponseData(await response.json());
     } catch (error) {
       console.error('API Error:', error);
     }
@@ -79,6 +78,31 @@ const Form = (props) => {
         </div>
       </div>
       </form>
+
+      <div className="container mt-4 border py-2">
+          <div className="px-4 mx-auto ">
+            <h5 className="mt-2">Distance</h5>
+            <div>
+              <div>Distance :</div>
+              <div>Time :</div>
+            </div>
+            <hr/>
+            <h5 className="mt-2">Petrol</h5>
+            <div>
+              <div>Quantity :</div>
+              <div>Cost :</div>
+            </div>
+            <hr/>
+            <h5 className="mt-2">Toll</h5>
+            <div>
+              <div>Tolls :</div>
+              <div>Charges :</div>
+            </div>
+
+          </div>        
+
+        {console.log(responseData)}
+      </div>
     </div>
   );
 };
