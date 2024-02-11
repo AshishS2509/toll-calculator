@@ -1,14 +1,14 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import Input from "./input";
 
 const Form = (props) => {
-
   const [source, setSource] = useState({});
   const [destination, setDestination] = useState({});
   const [points, setPoints] = useState({});
-  const [responseData, setResponseData] = useState({})
-  const [loading, setLoading] = useState(false)
-  
+  const [responseData, setResponseData] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [currentRoute, setCurrentRoute] = useState({})
+
   const handelSource = (name, lat, lon) => {
     setSource({ address: name, lat: lat, lng: lon });
   };
@@ -16,95 +16,99 @@ const Form = (props) => {
     setDestination({ address: name, lat: lat, lng: lon });
   };
   const handelPoints = (name, lat, lon) => {
-    setPoints({ address: name, lat: lat, lng: lon })
-  }
+    setPoints({ address: name, lat: lat, lng: lon });
+  };
 
   const handelSubmit = async (event) => {
     event.preventDefault();
     const data = {
-      from:source,
-      to:destination,
-      waypoints:points
-    }
+      from: source,
+      to: destination,
+      waypoints: points,
+    };
 
     try {
-      const response = await fetch('http://localhost:3001/getData', {
-        method: 'POST',
+      const response = await fetch("http://localhost:3001/getData", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
       });
-      
-      setResponseData(await response.json());
-      setLoading(true)
+      const apiData = await response.json()
+      setResponseData(apiData);
+      setCurrentRoute(apiData.routes[0])
+      setLoading(true);
     } catch (error) {
-      console.error('API Error:', error);
+      console.error("API Error:", error);
     }
-  }
+
+  };
 
   return (
     <div className="col-lg-5">
       <form onSubmit={handelSubmit}>
-      <Input
-        label="Origin"
-        name="origin"
-        placeholder="Start"
-        iconClass="bi bi-geo-alt-fill"
-        helpText="Enter Origin"
-        handelMarker={handelSource}
-        required
-      />
-      <Input
-        label="Waypoint"
-        name="waypoint"
-        placeholder="Waypoint (optional)"
-        iconClass="bi bi-geo"
-        helpText="Enter Interim Stop."
-        handelMarker={handelPoints}
-      />
-      <Input
-        label="Destination"
-        name="destination"
-        placeholder="Destination"
-        iconClass="bi bi-geo-alt-fill"
-        helpText="Enter Destination"
-        handelMarker={handelDestination}
-        required
-      />
-      <div className="form-group row">
-        <div className="offset-4 col col-8">
-          <button name="submit" type="submit" className="btn btn-primary">
-            Submit
-          </button>
+        <Input
+          label="Origin"
+          name="origin"
+          placeholder="Start"
+          iconClass="bi bi-geo-alt-fill"
+          helpText="Enter Origin"
+          handelMarker={handelSource}
+          required
+        />
+        <Input
+          label="Waypoint"
+          name="waypoint"
+          placeholder="Waypoint (optional)"
+          iconClass="bi bi-geo"
+          helpText="Enter Interim Stop."
+          handelMarker={handelPoints}
+        />
+        <Input
+          label="Destination"
+          name="destination"
+          placeholder="Destination"
+          iconClass="bi bi-geo-alt-fill"
+          helpText="Enter Destination"
+          handelMarker={handelDestination}
+          required
+        />
+        <div className="form-group row">
+          <div className="offset-4 col col-8">
+            <button name="submit" type="submit" className="btn btn-primary">
+              Submit
+            </button>
+          </div>
         </div>
-      </div>
       </form>
 
-        {loading && <div className="container mt-4 border py-2">
+      {loading && responseData.routes.map((route,index)=> <button key={index}>{route.summary.name}</button>)}
+      {loading && 
+      <div className="container mt-4 border py-2">
           <div className="px-4 mx-auto ">
-            <h5 className="mt-2">Distance</h5>
+            <h5 className="mt-2">Distance</h5> 
             <div>
-              <div>Distance :</div>
-              <div>Time :</div>
+              <div>Distance : {}</div>
+              <div>Time :  : {}</div>
             </div>
-            <hr/>
+            <hr />
             <h5 className="mt-2">Petrol</h5>
             <div>
-              <div>Quantity :</div>
-              <div>Cost :</div>
+              <div>Quantity : </div>
+              <div>Cost : {}</div>
             </div>
-            <hr/>
+            <hr />
             <h5 className="mt-2">Toll</h5>
             <div>
-              <div>Tolls :</div>
-              <div>Charges :</div>
+              <div>Tolls : {}</div>
+              <div>Charges : {}</div>
             </div>
+          </div>
 
-          </div>        
-
-        {console.log(responseData)}
-      </div>}
+          {console.log(currentRoute)}
+        </div>
+      }
     </div>
   );
 };
