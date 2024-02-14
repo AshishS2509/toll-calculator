@@ -83,30 +83,30 @@ const Form = (props) => {
         </div>
       </form>
 
-      {loading && responseData.routes.map((route,index)=> <button key={index}>{route.summary.name}</button>)}
+      {loading && responseData.routes.map((route,index)=> <button key={index} className="btn btn-outline-dark mx-1 mt-3 w-50 pe-2">{route.summary.name}</button>)}
       {loading && 
-      <div className="container mt-4 border py-2">
+      <div className="container mt-4 py-2">
           <div className="px-4 mx-auto ">
             <h5 className="mt-2">Distance</h5> 
             <div>
-              <div>Distance : {}</div>
-              <div>Time :  : {}</div>
+              <div>Distance : {currentRoute.summary.distance.metric}</div>
+              <div>Time : {currentRoute.summary.duration.text}</div>
             </div>
             <hr />
             <h5 className="mt-2">Petrol</h5>
             <div>
-              <div>Quantity : </div>
-              <div>Cost : {}</div>
+              <div>Quantity : {(currentRoute.costs.fuel/responseData.summary.fuelPrice.value).toFixed(2)}</div>
+              <div>Cost : {(currentRoute.costs.fuel)} Rs. /-</div>
             </div>
             <hr />
             <h5 className="mt-2">Toll</h5>
             <div>
-              <div>Tolls : {}</div>
-              <div>Charges : {}</div>
+              <div>Tolls : {currentRoute.tolls.length}</div>
+              <div>Charges : {currentRoute.costs.cash} Rs. /-</div>
             </div>
           </div>
 
-          {console.log(currentRoute)}
+          {console.log(responseData)}
         </div>
       }
     </div>
