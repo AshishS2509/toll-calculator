@@ -102,7 +102,8 @@ const Form = (props) => {
             <h5 className="mt-2">Toll</h5>
             <div>
               <div>Tolls : {currentRoute.tolls.length}</div>
-              <div>Charges : {currentRoute.costs.cash} Rs. /-</div>
+              <div>Charges : Tag - {currentRoute.costs.minimumTollCost} Rs. /-</div>
+              <div>Charges : Cash - {currentRoute.costs.cash} Rs. /-</div>
             </div>
           </div>
 
