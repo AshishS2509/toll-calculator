@@ -7,8 +7,12 @@ function App() {
   return (
     <div className="d-flex container full align-items-center m-auto p-0">
       <div className="row py-5 full mx-auto w-100 mb-5">
-        <Form/>
-        <Map/>
+        <div className="col-lg-7">
+          <Form/>
+        </div>
+        <div className="col-lg-5">
+          <Map/>
+        </div>
       </div>
     </div>
   );

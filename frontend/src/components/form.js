@@ -7,7 +7,7 @@ const Form = (props) => {
   const [points, setPoints] = useState({});
   const [responseData, setResponseData] = useState({});
   const [loading, setLoading] = useState(false);
-  const [currentRoute, setCurrentRoute] = useState({})
+  const [currentRoute, setCurrentRoute] = useState({});
 
   const handelSource = (name, lat, lon) => {
     setSource({ address: name, lat: lat, lng: lon });
@@ -35,24 +35,23 @@ const Form = (props) => {
         },
         body: JSON.stringify(data),
       });
-      const apiData = await response.json()
+      const apiData = await response.json();
       setResponseData(apiData);
-      setCurrentRoute(apiData.routes[0])
+      setCurrentRoute(apiData.routes[0]);
       setLoading(true);
     } catch (error) {
       console.error("API Error:", error);
     }
-
   };
 
   return (
-    <div className="col-lg-5">
+    <div>
       <form onSubmit={handelSubmit}>
         <Input
           label="Origin"
           name="origin"
           placeholder="Start"
-          iconClass="bi bi-geo-alt-fill"
+          iconclassName="bi bi-geo-alt-fill"
           helpText="Enter Origin"
           handelMarker={handelSource}
           required
@@ -61,7 +60,7 @@ const Form = (props) => {
           label="Waypoint"
           name="waypoint"
           placeholder="Waypoint (optional)"
-          iconClass="bi bi-geo"
+          iconclassName="bi bi-geo"
           helpText="Enter Interim Stop."
           handelMarker={handelPoints}
         />
@@ -69,7 +68,7 @@ const Form = (props) => {
           label="Destination"
           name="destination"
           placeholder="Destination"
-          iconClass="bi bi-geo-alt-fill"
+          iconclassName="bi bi-geo-alt-fill"
           helpText="Enter Destination"
           handelMarker={handelDestination}
           required
@@ -83,33 +82,68 @@ const Form = (props) => {
         </div>
       </form>
 
-      {loading && responseData.routes.map((route,index)=> <button key={index} className="btn btn-outline-dark mx-1 mt-3 w-50 pe-2">{route.summary.name}</button>)}
-      {loading && 
-      <div className="container mt-4 py-2">
-          <div className="px-4 mx-auto ">
-            <h5 className="mt-2">Distance</h5> 
-            <div>
-              <div>Distance : {currentRoute.summary.distance.metric}</div>
-              <div>Time : {currentRoute.summary.duration.text}</div>
+      <hr />
+
+      <div className="container-fluid">
+        <div className="row">
+          <div className="col-md-12 flex" style={{height:50}}>
+            {loading &&
+              responseData.routes.map((route, index) => (
+                <button
+                  key={index}
+                  type="button"
+                  className="btn btn-secondary btn-block m-2 active"
+                >
+                  {route.summary.name}
+                </button>
+              ))}
+          </div>
+        </div>
+
+        <hr />
+          <div className="row">
+            <div className=" col-12 col-lg-4 bg-info text-light py-2 text-center">
+              <h3 className="">Distance</h3>
+              <hr className=" border border-2 border-dark" />
+              {loading && (
+                <div className="container">
+                  <h5>{currentRoute.summary.distance.metric}</h5>
+                  <h5>{currentRoute.summary.duration.text} travel.</h5>
+                </div>
+              )}
             </div>
-            <hr />
-            <h5 className="mt-2">Petrol</h5>
-            <div>
-              <div>Quantity : {(currentRoute.costs.fuel/responseData.summary.fuelPrice.value).toFixed(2)}</div>
-              <div>Cost : {(currentRoute.costs.fuel)} Rs. /-</div>
+            <div className="col-12 col-lg-4 bg-info-subtle text-black-50 text-center py-2">
+              <h3 className="">Petrol</h3>
+              <hr className=" border border-2 border-dark" />
+              {loading && (
+                <div className="container">
+                  <h5>
+                    {(
+                      currentRoute.costs.fuel /
+                      responseData.summary.fuelPrice.value
+                    ).toFixed(2)}{" "}
+                    lit required.
+                  </h5>
+                  <h5>{currentRoute.costs.fuel} Rs. /-</h5>
+                </div>
+              )}
             </div>
-            <hr />
-            <h5 className="mt-2">Toll</h5>
-            <div>
-              <div>Tolls : {currentRoute.tolls.length}</div>
-              <div>Charges : Tag - {currentRoute.costs.minimumTollCost} Rs. /-</div>
-              <div>Charges : Cash - {currentRoute.costs.cash} Rs. /-</div>
+            <div className="col-12 col-lg-4 bg-info text-light py-2 text-center ">
+              <h3 className="">Toll</h3>
+              <hr className=" border border-2 border-dark" />
+              {loading && (
+                <div className="container">
+                  <h5>{currentRoute.tolls.length} Tolls in route.</h5>
+                  <h5>
+                    Toll price:{" "}
+                    <h6>{currentRoute.costs.minimumTollCost} Rs. /- by Tag</h6>
+                    <h6>{currentRoute.costs.cash} Rs. /- by Cash</h6>
+                  </h5>
+                </div>
+              )}
             </div>
           </div>
-
-          {console.log(responseData)}
-        </div>
-      }
+      </div>
     </div>
   );
 };
