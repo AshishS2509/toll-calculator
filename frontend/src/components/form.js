@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Input from "./input";
+import polyline from '@mapbox/polyline';
 
 const Form = (props) => {
   const [source, setSource] = useState({});
@@ -37,7 +38,9 @@ const Form = (props) => {
       });
       const apiData = await response.json();
       setResponseData(apiData);
+      console.log(apiData)
       setCurrentRoute(apiData.routes[0]);
+      props.setPolyline(polyline.decode(apiData.routes[0].polyline))
       setLoading(true);
     } catch (error) {
       console.error("API Error:", error);
