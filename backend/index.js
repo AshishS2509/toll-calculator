@@ -11,11 +11,10 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.post('/getData', async (req, res) => {
-    console.log(req.body)
     const data = {
         from: req.body.from,
         to: req.body.to,
-        waypoints: [req.body.waypoints],
+        waypoints: req.body.waypoints.address? [req.body.waypoints]: [],
         serviceProvider: 'here',
         vehicle: {
           type: '2AxlesAuto',

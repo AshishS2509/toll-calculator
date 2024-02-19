@@ -19,6 +19,9 @@ const Form = (props) => {
   const handelPoints = (name, lat, lon) => {
     setPoints({ address: name, lat: lat, lng: lon });
   };
+  const handelClick = (e,index) => {
+    console.log(index);
+  }
 
   const handelSubmit = async (event) => {
     event.preventDefault();
@@ -95,6 +98,7 @@ const Form = (props) => {
                   key={index}
                   type="button"
                   className="btn btn-secondary btn-block m-2 active"
+                  onClick={handelClick(index)}
                 >
                   {route.summary.name}
                 </button>
