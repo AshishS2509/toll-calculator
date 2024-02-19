@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is a Toll Calculator Web Application built using React and Bootstrap, leveraging Map My India API and Toll Guru API. The application allows users to input their origin and destination, with an optional waypoint, and provides information on total toll fare, petrol prices along the route, and a visual representation of the route on the map.
+This is a Toll Calculator Web Application built using React and Bootstrap, leveraging Leaflet Maps and Toll Guru API. The application allows users to input their origin and destination, with an optional waypoint, and provides information on total toll fare, petrol prices along the route, and a visual representation of the route on the map.
 
 ## Features
 
@@ -12,7 +12,7 @@ This is a Toll Calculator Web Application built using React and Bootstrap, lever
 
 - **Petrol Prices:** Users can view the estimated petrol prices for the entire route, helping them plan their fuel expenses.
 
-- **Interactive Map:** The route is visually represented on an interactive map powered by Map My India API, providing users with a clear understanding of the journey.
+- **Interactive Map:** The route is visually represented on an interactive map powered by Leaflet, providing users with a clear understanding of the journey.
 
 ## Technologies Used
 
@@ -20,7 +20,7 @@ This is a Toll Calculator Web Application built using React and Bootstrap, lever
 
 - **Bootstrap:** Bootstrap is used for responsive and clean UI design, ensuring a seamless user experience.
 
-- **Map My India API:** Integration with Map My India API allows for accurate and dynamic mapping of the route.
+- **Leaflet Map library:** Integration with Map My India API allows for accurate and dynamic mapping of the route.
 
 - **Toll Guru API:** Toll Guru API is utilized to fetch real-time toll information and calculate the total toll fare for the specified route.
 
@@ -41,8 +41,6 @@ This is a Toll Calculator Web Application built using React and Bootstrap, lever
 
 3. **Configure APIs:**
     ```bash
-    # Map My India API Key
-    REACT_APP_MAP_MY_INDIA = <your_map_my_india_api_key>
     # Toll Guru API Key
     REACT_APP_TOLL_GURU = <your_toll_guru_api_key>
 
