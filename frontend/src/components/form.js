@@ -31,7 +31,7 @@ const Form = (props) => {
       waypoints: points,
     };
     try {
-      const response = await fetch("http://localhost:3001/getData", {
+      const response = await fetch("https://toll-api.onrender.com/getData", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
