@@ -27,7 +27,6 @@ const Form = (props) => {
       to: destination,
       waypoints: points,
     };
-
     try {
       const response = await fetch("http://localhost:3001/getData", {
         method: "POST",

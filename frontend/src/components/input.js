@@ -24,7 +24,7 @@ const Input = ({ label, name, placeholder, iconClass, helpText, required, handel
   const handelList = async (index) => {
     const value = suggestions[index];
     const name = value.name + ", " + value.stateCode + ", " + value.countryCode
-    handelMarker && handelMarker(name, Number(value.latitude), Number(value.longitude))
+    handelMarker(name, Number(value.latitude), Number(value.longitude))
     setInput(value.name + ", " + value.stateCode );
     setIsFocused(false);
   };
