@@ -4,7 +4,7 @@ import cors from 'cors'
 import * as dotnet from 'dotenv';
 dotnet.config();
 const app = express();
-const port = 3001;
+const port = process.env.port || 3001;
 const key = process.env.TOLL_GURU_API_KEY;
 
 app.use(cors());
