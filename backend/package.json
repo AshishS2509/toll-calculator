@@ -1,21 +1,37 @@
 {
-  "name": "toll-calculator",
-  "version": "1.0.0",
-  "description": "Toll calculator API.",
+  "name": "toll_guru_backend",
+  "version": "2.0.0",
+  "description": "Toll Guru Api Rebuild",
   "main": "index.js",
-  "type": "module",
   "scripts": {
+    "dev": "nodemon index.ts",
+    "build": "npx tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AshishS2509/toll-calculator.git"
+  },
+  "keywords": [
+    "toll-guru",
+    "toll",
+    "calculator",
+    "toll",
+    "api"
+  ],
+  "author": "AshishS2509",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AshishS2509/toll-calculator/issues"
+  },
+  "homepage": "https://github.com/AshishS2509/toll-calculator#readme",
   "dependencies": {
-    "body-parser": "^1.20.2",
-    "cors": "^2.8.5",
-    "dotenv": "^16.3.2",
-    "express": "^4.18.2",
-    "leaflet": "^1.9.4",
-    "react-leaflet": "^4.2.1",
-    "request": "^2.88.2"
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "dotenv": "^16.4.7",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.7.3"
   }
 }
