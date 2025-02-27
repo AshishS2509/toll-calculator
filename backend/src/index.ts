@@ -6,6 +6,7 @@ app.use(json())
 
 dotenv.config()
 const key = process.env.TOLL_GURU_API_KEY ?? "";
+const port = process.env.PORT
 
 const defaultData: Partial<Route> = {
     serviceProvider: "here",
@@ -62,4 +63,4 @@ app.post("/calculate", manualValidation, async (req: Request<unknown, unknown, R
     }
 })
 
-app.listen(3001, () => console.log("Listening on port 3000"))
+app.listen(port, () => console.log("Listening on port 3000"))
