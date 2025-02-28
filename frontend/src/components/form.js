@@ -31,12 +31,12 @@ const Form = (props) => {
       waypoints: points,
     };
     try {
-      const response = await fetch("https://toll-api.onrender.com/getData", {
+      const response = await fetch("https://toll-api.onrender.com/calculate", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: data,
       });
       const apiData = await response.json();
       setResponseData(apiData);
