@@ -4,18 +4,7 @@ import dotenv from "dotenv"
 import cors from "cors"
 const app = express();
 app.use(json())
-const allowed = ["http://localhost:3000", "http://localhost:5173", "https://toll-calculator-ten-beta.vercel.app"]
-app.use(cors({
-    origin: (origin, callBack) => {
-        console.log(origin)
-        if (!allowed.includes(origin ?? "")) {
-            callBack(new Error("Not allowed"))
-        } else {
-            callBack(null, true)
-        }
-
-    },
-}))
+app.use(cors())
 
 dotenv.config()
 const key = process.env.TOLL_GURU_API_KEY ?? "";
