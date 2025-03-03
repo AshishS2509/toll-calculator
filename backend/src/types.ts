@@ -23,6 +23,13 @@ export type Vehicle = {
   emissionClass: string;
 };
 
+export type RequestType = {
+  from: Position;
+  to: Position;
+  waypoints: Array<{ address: string }>;
+  vehicle: string;
+};
+
 export type Route = {
   from: Position;
   to: Position;
@@ -162,17 +169,9 @@ export type Summary = {
   source: string;
 };
 
-export interface SuccessResponse {
+export interface ApiResponse {
   status: number;
   summary: Summary;
   routes: RouteDetails[];
   meta?: Record<string, unknown>;
 }
-
-export interface ErrorResponse {
-  error: true;
-  message: string;
-  status?: number;
-}
-
-export type ApiResponse = SuccessResponse | ErrorResponse;
