@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Input from "./input";
-import polyline from '@mapbox/polyline';
+import polyline from "@mapbox/polyline";
 
 const Form = (props) => {
   const [source, setSource] = useState({});
@@ -19,9 +19,9 @@ const Form = (props) => {
   const handelPoints = (name, lat, lon) => {
     setPoints({ address: name, lat: lat, lng: lon });
   };
-  const handelClick = (e,index) => {
+  const handelClick = (e, index) => {
     console.log(index);
-  }
+  };
 
   const handelSubmit = async (event) => {
     event.preventDefault();
@@ -36,13 +36,13 @@ const Form = (props) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: data,
+        body: JSON.stringify(data),
       });
       const apiData = await response.json();
       setResponseData(apiData);
-      console.log(apiData)
+      console.log(apiData);
       setCurrentRoute(apiData.routes[0]);
-      props.setPolyline(polyline.decode(apiData.routes[0].polyline))
+      props.setPolyline(polyline.decode(apiData.routes[0].polyline));
       setLoading(true);
     } catch (error) {
       console.error("API Error:", error);
@@ -91,7 +91,7 @@ const Form = (props) => {
 
       <div className="container-fluid">
         <div className="row">
-          <div className="col-md-12 flex" style={{height:50}}>
+          <div className="col-md-12 flex" style={{ height: 50 }}>
             {loading &&
               responseData.routes.map((route, index) => (
                 <button
@@ -107,48 +107,48 @@ const Form = (props) => {
         </div>
 
         <hr />
-          <div className="row">
-            <div className=" col-12 col-lg-4 bg-info text-light py-2 text-center">
-              <h3 className="">Distance</h3>
-              <hr className=" border border-2 border-dark" />
-              {loading && (
-                <div className="container">
-                  <h5>{currentRoute.summary.distance.metric}</h5>
-                  <h5>{currentRoute.summary.duration.text} travel.</h5>
-                </div>
-              )}
-            </div>
-            <div className="col-12 col-lg-4 bg-info-subtle text-black-50 text-center py-2">
-              <h3 className="">Petrol</h3>
-              <hr className=" border border-2 border-dark" />
-              {loading && (
-                <div className="container">
-                  <h5>
-                    {(
-                      currentRoute.costs.fuel /
-                      responseData.summary.fuelPrice.value
-                    ).toFixed(2)}{" "}
-                    lit required.
-                  </h5>
-                  <h5>{currentRoute.costs.fuel} Rs. /-</h5>
-                </div>
-              )}
-            </div>
-            <div className="col-12 col-lg-4 bg-info text-light py-2 text-center ">
-              <h3 className="">Toll</h3>
-              <hr className=" border border-2 border-dark" />
-              {loading && (
-                <div className="container">
-                  <h5>{currentRoute.tolls.length} Tolls in route.</h5>
-                  <h5>
-                    Toll price:{" "}
-                    <h6>{currentRoute.costs.minimumTollCost} Rs. /- by Tag</h6>
-                    <h6>{currentRoute.costs.cash} Rs. /- by Cash</h6>
-                  </h5>
-                </div>
-              )}
-            </div>
+        <div className="row">
+          <div className=" col-12 col-lg-4 bg-info text-light py-2 text-center">
+            <h3 className="">Distance</h3>
+            <hr className=" border border-2 border-dark" />
+            {loading && (
+              <div className="container">
+                <h5>{currentRoute.summary.distance.metric}</h5>
+                <h5>{currentRoute.summary.duration.text} travel.</h5>
+              </div>
+            )}
           </div>
+          <div className="col-12 col-lg-4 bg-info-subtle text-black-50 text-center py-2">
+            <h3 className="">Petrol</h3>
+            <hr className=" border border-2 border-dark" />
+            {loading && (
+              <div className="container">
+                <h5>
+                  {(
+                    currentRoute.costs.fuel /
+                    responseData.summary.fuelPrice.value
+                  ).toFixed(2)}{" "}
+                  lit required.
+                </h5>
+                <h5>{currentRoute.costs.fuel} Rs. /-</h5>
+              </div>
+            )}
+          </div>
+          <div className="col-12 col-lg-4 bg-info text-light py-2 text-center ">
+            <h3 className="">Toll</h3>
+            <hr className=" border border-2 border-dark" />
+            {loading && (
+              <div className="container">
+                <h5>{currentRoute.tolls.length} Tolls in route.</h5>
+                <h5>
+                  Toll price:{" "}
+                  <h6>{currentRoute.costs.minimumTollCost} Rs. /- by Tag</h6>
+                  <h6>{currentRoute.costs.cash} Rs. /- by Cash</h6>
+                </h5>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

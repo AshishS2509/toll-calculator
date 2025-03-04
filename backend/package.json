@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon src/index.ts",
     "build": "npx tsc",
-    "start": "node dist/src/index.js --production",
+    "start": "node dist/index.js --production",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -27,14 +27,10 @@
   },
   "homepage": "https://github.com/AshishS2509/toll-calculator#readme",
   "dependencies": {
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.7",
-    "express": "^4.21.2"
+    "dotenv": "^16.4.7"
   },
   "devDependencies": {
-    "@types/cors": "^2.8.17",
-    "@types/express": "^5.0.0",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^5.7.3"
+    "typescript": "^5.8.2"
   }
 }

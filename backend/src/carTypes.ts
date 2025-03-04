@@ -1,0 +1,138 @@
+import { Vehicle } from "./types";
+
+interface VehicleType {
+  [key: string]: Vehicle;
+}
+
+const vehicleTypes: VehicleType = {
+  "Standard Car": {
+    type: "2AxlesAuto",
+    weight: { value: 3000, unit: "pound" },
+    height: { value: 1.5, unit: "meter" },
+    length: { value: 4.5, unit: "meter" },
+    axles: 2,
+    emissionClass: "euro_6",
+  },
+  "Large Car": {
+    type: "3AxlesAuto",
+    weight: { value: 3500, unit: "pound" },
+    height: { value: 1.6, unit: "meter" },
+    length: { value: 5, unit: "meter" },
+    axles: 3,
+    emissionClass: "euro_6",
+  },
+  "Extra-Large Car": {
+    type: "4AxlesAuto",
+    weight: { value: 4000, unit: "pound" },
+    height: { value: 1.7, unit: "meter" },
+    length: { value: 5.5, unit: "meter" },
+    axles: 4,
+    emissionClass: "euro_6",
+  },
+  "Electric Car": {
+    type: "2AxlesEV",
+    weight: { value: 3500, unit: "pound" },
+    height: { value: 1.5, unit: "meter" },
+    length: { value: 4.5, unit: "meter" },
+    axles: 2,
+    emissionClass: "zero_emission",
+  },
+  "Large Electric Car": {
+    type: "3AxlesEV",
+    weight: { value: 4000, unit: "pound" },
+    height: { value: 1.6, unit: "meter" },
+    length: { value: 5, unit: "meter" },
+    axles: 3,
+    emissionClass: "zero_emission",
+  },
+  Taxi: {
+    type: "2AxlesTaxi",
+    weight: { value: 3100, unit: "pound" },
+    height: { value: 1.5, unit: "meter" },
+    length: { value: 4.5, unit: "meter" },
+    axles: 2,
+    emissionClass: "euro_5",
+  },
+  "Small Truck": {
+    type: "2AxlesTruck",
+    weight: { value: 8000, unit: "pound" },
+    height: { value: 2.5, unit: "meter" },
+    length: { value: 6, unit: "meter" },
+    axles: 2,
+    emissionClass: "euro_5",
+  },
+  "Medium Truck": {
+    type: "3AxlesTruck",
+    weight: { value: 12000, unit: "pound" },
+    height: { value: 3, unit: "meter" },
+    length: { value: 7.5, unit: "meter" },
+    axles: 3,
+    emissionClass: "euro_5",
+  },
+  "Large Truck": {
+    type: "4AxlesTruck",
+    weight: { value: 16000, unit: "pound" },
+    height: { value: 3.5, unit: "meter" },
+    length: { value: 9, unit: "meter" },
+    axles: 4,
+    emissionClass: "euro_5",
+  },
+  "Small Bus": {
+    type: "2AxlesBus",
+    weight: { value: 10000, unit: "pound" },
+    height: { value: 3, unit: "meter" },
+    length: { value: 7, unit: "meter" },
+    axles: 2,
+    emissionClass: "euro_5",
+  },
+  "Large Bus": {
+    type: "3AxlesBus",
+    weight: { value: 15000, unit: "pound" },
+    height: { value: 3.5, unit: "meter" },
+    length: { value: 9, unit: "meter" },
+    axles: 3,
+    emissionClass: "euro_5",
+  },
+  Motorcycle: {
+    type: "2AxlesMotorcycle",
+    weight: { value: 500, unit: "pound" },
+    height: { value: 1.2, unit: "meter" },
+    length: { value: 2, unit: "meter" },
+    axles: 2,
+    emissionClass: "euro_4",
+  },
+  "Large Motorcycle": {
+    type: "3AxlesMotorcycle",
+    weight: { value: 800, unit: "pound" },
+    height: { value: 1.3, unit: "meter" },
+    length: { value: 2.5, unit: "meter" },
+    axles: 3,
+    emissionClass: "euro_4",
+  },
+  "Small RV": {
+    type: "2AxlesRv",
+    weight: { value: 6000, unit: "pound" },
+    height: { value: 2.5, unit: "meter" },
+    length: { value: 6, unit: "meter" },
+    axles: 2,
+    emissionClass: "euro_5",
+  },
+  "Medium RV": {
+    type: "3AxlesRv",
+    weight: { value: 8000, unit: "pound" },
+    height: { value: 2.8, unit: "meter" },
+    length: { value: 7.5, unit: "meter" },
+    axles: 3,
+    emissionClass: "euro_5",
+  },
+  "Large RV": {
+    type: "4AxlesRv",
+    weight: { value: 10000, unit: "pound" },
+    height: { value: 3, unit: "meter" },
+    length: { value: 9, unit: "meter" },
+    axles: 4,
+    emissionClass: "euro_5",
+  },
+};
+
+export default vehicleTypes;
