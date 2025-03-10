@@ -9,7 +9,7 @@ RUN npm install
 
 COPY . .
 
-RUN npx tsc
+RUN npm run build
 
 
 FROM node:current-alpine3.21 AS final
