@@ -1,19 +1,11 @@
 import { ApiResponse, RequestType, Route } from "./types";
 import http from "http";
-import dotenv from "dotenv";
-import vehicleTypes from "./carTypes";
-
-dotenv.config();
+import vehicleTypes from "./utils/carTypes";
 
 const API_KEY = process.env.TOLL_GURU_API_KEY || "Your API Key";
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3003;
 const API_URL = process.env.API_URL || "Toll Guru API URL";
-
-const allowedOrigins = [
-  "http://localhost:3000",
-  "http://localhost:5173",
-  "https://toll-calculator-ten-beta.vercel.app",
-];
+const ALLOWED_ORIGINS = process.env.ALLOWED_ORIGINS?.split(",") || [];
 
 http
   .createServer(async (req, res) => {
@@ -26,7 +18,7 @@ http
           "Content-Type": "application/json",
         })
         .end();
-    } else if (allowedOrigins.includes(origin)) {
+    } else if (ALLOWED_ORIGINS.includes(origin)) {
       res.setHeader("Access-Control-Allow-Origin", origin);
       res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
       res.setHeader("Access-Control-Allow-Headers", "Content-Type, x-api-key");
@@ -38,6 +30,15 @@ http
     } else {
       return res
         .writeHead(403, "CORS policy violation", {
+          "Content-Type": "application/json",
+        })
+        .end();
+    }
+
+    // Wakeup call for handle server sleep.
+    if (method === "GET" && url === "/wakeup") {
+      return res
+        .writeHead(200, "OK", {
           "Content-Type": "application/json",
         })
         .end();
@@ -58,13 +59,13 @@ http
 
     req.on("end", async () => {
       try {
-        const parsedData: RequestType = JSON.parse(body);
+        const { from, to, waypoints, vehicle }: RequestType = JSON.parse(body);
 
         const requestData: Route = {
-          from: parsedData.from,
-          to: parsedData.to,
-          waypoints: parsedData.waypoints,
-          vehicle: vehicleTypes[parsedData.vehicle],
+          from,
+          to,
+          waypoints,
+          vehicle: vehicleTypes[vehicle],
           serviceProvider: "here",
         };
 
@@ -76,7 +77,6 @@ http
           },
           body: JSON.stringify(requestData),
         });
-
         if (!response.ok) {
           throw new Error(
             `API request failed: ${response.status} ${response.statusText}`
