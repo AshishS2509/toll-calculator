@@ -2,8 +2,8 @@ import { useRef, useEffect } from "react";
 import { Map as Structure } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { Box } from "@mui/material";
-import MAP_STYLE_URL from "../../config";
 import { useMapStore } from "../../hooks/useMap";
+import getStyleUrl from "../../config";
 
 export default function Map() {
   const mapContainer = useRef<HTMLDivElement | null>(null);
@@ -14,7 +14,8 @@ export default function Map() {
 
     const newStructure = new Structure({
       container: mapContainer.current,
-      style: MAP_STYLE_URL,
+      style: getStyleUrl(),
+      interactive: true,
       center: [78.0, 21.0],
       zoom: 4,
       attributionControl: false,
@@ -22,10 +23,10 @@ export default function Map() {
     setMap(newStructure);
 
     return () => {
-      setMap(null);
+      newStructure.remove();
       mapContainer.current = null;
     };
-  }, [map, setMap]);
+  }, []);
   return (
     <>
       <Box

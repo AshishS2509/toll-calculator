@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import MainPage from "./pages";
 import { CssBaseline, IconButton, ThemeProvider } from "@mui/material";
 import Icons from "./components/Icons";
 import { darkTheme, lightTheme } from "./themes/theme";
+import { useMapStore } from "./hooks/useMap";
+import getStyleUrl from "./config";
 
 function App() {
   const storedTheme = localStorage.getItem("theme") || "light";
@@ -10,12 +12,15 @@ function App() {
     storedTheme as "light" | "dark"
   );
 
-  useEffect(() => {
-    localStorage.setItem("theme", themeMode);
-  }, [themeMode]);
+  const { map } = useMapStore();
 
   const toggleTheme = () => {
-    setThemeMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
+    setThemeMode((prevMode) => {
+      const newMode = prevMode === "light" ? "dark" : "light";
+      localStorage.setItem("theme", newMode);
+      map?.setStyle(getStyleUrl(), { diff: true });
+      return newMode;
+    });
   };
 
   return (
@@ -23,13 +28,15 @@ function App() {
       <CssBaseline />
       <IconButton
         onClick={toggleTheme}
-        sx={{ position: "absolute", top: 10, right: 10 }}
+        title="Toggle Theme"
+        sx={{
+          position: "absolute",
+          top: 10,
+          right: 10,
+          zIndex: 100,
+        }}
       >
-        {themeMode === "light" ? (
-          <Icons iconName="dark" />
-        ) : (
-          <Icons iconName="light" />
-        )}
+        <Icons iconName={themeMode} />
       </IconButton>
       <MainPage />
     </ThemeProvider>
