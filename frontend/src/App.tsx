@@ -1,10 +1,8 @@
 import { useState } from "react";
 import MainPage from "./pages";
-import { CssBaseline, IconButton, ThemeProvider } from "@mui/material";
-import Icons from "./components/Icons";
+import { CssBaseline, ThemeProvider } from "@mui/material";
 import { darkTheme, lightTheme } from "./themes/theme";
-import { useMapStore } from "./hooks/useMap";
-import getStyleUrl from "./config";
+import ThemeSwitch from "./components/ThemeSwitch";
 
 function App() {
   const storedTheme = localStorage.getItem("theme") || "light";
@@ -12,32 +10,10 @@ function App() {
     storedTheme as "light" | "dark"
   );
 
-  const { map } = useMapStore();
-
-  const toggleTheme = () => {
-    setThemeMode((prevMode) => {
-      const newMode = prevMode === "light" ? "dark" : "light";
-      localStorage.setItem("theme", newMode);
-      map?.setStyle(getStyleUrl(), { diff: true });
-      return newMode;
-    });
-  };
-
   return (
     <ThemeProvider theme={themeMode === "light" ? lightTheme : darkTheme}>
       <CssBaseline />
-      <IconButton
-        onClick={toggleTheme}
-        title="Toggle Theme"
-        sx={{
-          position: "absolute",
-          top: 10,
-          right: 10,
-          zIndex: 100,
-        }}
-      >
-        <Icons iconName={themeMode} />
-      </IconButton>
+      <ThemeSwitch themeMode={themeMode} setThemeMode={setThemeMode} />
       <MainPage />
     </ThemeProvider>
   );

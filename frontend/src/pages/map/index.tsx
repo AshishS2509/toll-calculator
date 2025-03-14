@@ -18,7 +18,11 @@ export default function Map() {
       interactive: true,
       center: [78.0, 21.0],
       zoom: 4,
+      minZoom: 2,
+      maxZoom: 20,
       attributionControl: false,
+      pitch: 45,
+      trackResize: true,
     });
     setMap(newStructure);
 
@@ -32,8 +36,9 @@ export default function Map() {
       <Box
         ref={mapContainer}
         sx={{
-          height: "100vh",
-          width: "100vw",
+          height: "calc(100vh - 8px)",
+          width: "calc(100vw - 8px)",
+          borderRadius: "8px",
           overflow: "hidden",
         }}
       />
