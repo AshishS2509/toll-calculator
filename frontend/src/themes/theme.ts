@@ -8,7 +8,7 @@ const sharedThemeSettings: ThemeOptions = {
     h2: { fontSize: "2rem", fontWeight: 600 },
   },
   shape: {
-    borderRadius: 12,
+    borderRadius: 6,
   },
   components: {
     MuiButton: {
@@ -16,6 +16,16 @@ const sharedThemeSettings: ThemeOptions = {
         root: {
           padding: "8px 20px",
           fontWeight: 500,
+        },
+      },
+    },
+    MuiAutocomplete: {
+      styleOverrides: {
+        popper: {
+          border: "1px solid rgb(118, 118, 118)", // Add a border
+          borderRadius: 6,
+          boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)", // Optional: shadow for better visibility
+          backgroundColor: "transparent", // Optional: background color
         },
       },
     },
@@ -97,7 +107,7 @@ export const lightTheme = createTheme({
       selected: "rgba(25, 118, 210, 0.16)",
       disabled: "#bdbdbd",
     },
-    divider: "rgba(0, 0, 0, 0.06)",
+    divider: "rgba(150, 150, 150, 0.5)",
   },
 });
 
@@ -176,6 +186,6 @@ export const darkTheme = createTheme({
       selected: "rgba(41, 182, 246, 0.16)",
       disabled: "#424242",
     },
-    divider: "rgba(255, 255, 255, 0.12)",
+    divider: "rgba(150, 150, 150, 0.5)",
   },
 });

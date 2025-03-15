@@ -29,9 +29,9 @@ const ThemeSwitch = ({ themeMode, setThemeMode }: IThemeMode) => {
       }}
     >
       {themeMode === "light" ? (
-        <AiFillSun size={20} />
-      ) : (
         <AiFillMoon size={20} />
+      ) : (
+        <AiFillSun size={20} />
       )}
     </Fab>
   );

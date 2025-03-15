@@ -20,6 +20,14 @@ const CustomAccordion = ({
       <AccordionSummary
         expandIcon={expandIcon}
         onClick={() => setExpand(!expand)}
+        sx={{
+          minHeight: "48px !important",
+          height: "48px",
+          "&.Mui-expanded": {
+            minHeight: "48px !important",
+            height: "48px",
+          },
+        }}
       >
         {titleIcon}
         <Typography component="span" paddingX={2}>

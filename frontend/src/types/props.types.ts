@@ -12,4 +12,25 @@ export interface IAccordionProps {
 
 export interface IAutocompleteProps {
   name: string;
+  options: string[];
+  onSearch: (value: string) => void;
+  onChange: (event: React.SyntheticEvent, value: string | null) => void;
 }
+
+export type VehicleTypeKeys =
+  | "Standard Car"
+  | "Large Car"
+  | "Extra-Large Car"
+  | "Electric Car"
+  | "Large Electric Car"
+  | "Taxi"
+  | "Small Truck"
+  | "Medium Truck"
+  | "Large Truck"
+  | "Small Bus"
+  | "Large Bus"
+  | "Motorcycle"
+  | "Large Motorcycle"
+  | "Small RV"
+  | "Medium RV"
+  | "Large RV";

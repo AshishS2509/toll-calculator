@@ -1,6 +1,6 @@
 import { Autocomplete, styled, TextField } from "@mui/material";
 import { useState } from "react";
-import { IAutocompleteProps } from "../types/props.types";
+import { IAutocompleteProps } from "../../types/props.types";
 
 const InputField = styled(TextField)(() => ({
   width: "100%",
@@ -10,24 +10,28 @@ const InputField = styled(TextField)(() => ({
   "& .MuiInputBase-root": { height: "36px" },
 }));
 
-const CustomAutocomplete = ({ name }: IAutocompleteProps) => {
+const CustomAutocomplete = ({
+  name,
+  options,
+  onSearch,
+  onChange,
+}: IAutocompleteProps) => {
   const [value, setValue] = useState<string | null>(null);
   return (
     <Autocomplete
       size="small"
+      fullWidth
       id={name}
       value={value}
-      open={false}
       loading={false}
-      options={[]}
+      options={options}
       isOptionEqualToValue={(option, value) => option === value}
       getOptionLabel={(option) => option}
       onInputChange={(_event, value) => {
         setValue(value);
+        onSearch(value);
       }}
-      onChange={() => {
-        //
-      }}
+      onChange={onChange}
       renderInput={(params) => (
         <InputField
           name={name}
