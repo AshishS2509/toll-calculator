@@ -1,4 +1,4 @@
-const MAPTILER_API_KEY = import.meta.env.VITE_MAPTILER_API_KEY;
+export const MAPTILER_API_KEY = import.meta.env.VITE_MAPTILER_API_KEY;
 
 const getStyleUrl = () => {
   const theme = localStorage.getItem("theme") || "light";

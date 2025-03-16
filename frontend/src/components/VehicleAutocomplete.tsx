@@ -1,6 +1,9 @@
+import { SyntheticEvent } from "react";
+import { IVehicleAutocompleteProps } from "../types/props.types";
 import CustomAutocomplete from "./shared/Autocomplete";
+import { VehicleTypeKeys } from "../types/types";
 
-const options = [
+const options: VehicleTypeKeys[] = [
   "Standard Car",
   "Large Car",
   "Extra-Large Car",
@@ -19,14 +22,19 @@ const options = [
   "Large RV",
 ];
 
-const VehicleAutocomplete = ({ name }: { name: string }) => {
+const VehicleAutocomplete = ({ name, onChange }: IVehicleAutocompleteProps) => {
+  const handleChange = (
+    _: SyntheticEvent<Element, Event>,
+    val: VehicleTypeKeys | null
+  ) => {
+    onChange(val);
+  };
   return (
     <CustomAutocomplete
       name={name}
       options={options}
-      onSearch={() => {}}
-      onChange={() => {}}
-      key={new Date().getTime()}
+      onChange={handleChange}
+      getOptionLabel={(val) => val}
     />
   );
 };

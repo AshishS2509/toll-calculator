@@ -1,3 +1,6 @@
+import { IOptionFormat } from "./data.types";
+import { VehicleTypeKeys } from "./types";
+
 export interface IThemeMode {
   themeMode: "light" | "dark";
   setThemeMode: React.Dispatch<React.SetStateAction<"light" | "dark">>;
@@ -10,27 +13,21 @@ export interface IAccordionProps {
   children: React.ReactNode;
 }
 
-export interface IAutocompleteProps {
+export interface IAutocompleteProps<T> {
   name: string;
-  options: string[];
-  onSearch: (value: string) => void;
-  onChange: (event: React.SyntheticEvent, value: string | null) => void;
+  options: T[];
+  loading?: boolean;
+  onSearch?: (value: string) => void;
+  onChange: (event: React.SyntheticEvent, value: T | null) => void;
+  getOptionLabel: (option: T) => string;
 }
 
-export type VehicleTypeKeys =
-  | "Standard Car"
-  | "Large Car"
-  | "Extra-Large Car"
-  | "Electric Car"
-  | "Large Electric Car"
-  | "Taxi"
-  | "Small Truck"
-  | "Medium Truck"
-  | "Large Truck"
-  | "Small Bus"
-  | "Large Bus"
-  | "Motorcycle"
-  | "Large Motorcycle"
-  | "Small RV"
-  | "Medium RV"
-  | "Large RV";
+export interface IGeocodingAutocompleteProps {
+  name: string;
+  onChange: (val: IOptionFormat | null) => void;
+}
+
+export interface IVehicleAutocompleteProps {
+  name: string;
+  onChange: (val: VehicleTypeKeys | null) => void;
+}
