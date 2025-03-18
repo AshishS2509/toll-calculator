@@ -3,10 +3,39 @@ import {
   AccordionDetails,
   AccordionSummary,
   Divider,
+  styled,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
 import { useState } from "react";
 import { IAccordionProps } from "../types/props.types";
+
+const DetailBox = styled(AccordionDetails)(() => {
+  const mobile = useMediaQuery("(max-width: 500px)");
+  return {
+    maxHeight: mobile ? "33vh" : "80vh",
+    overflowY: "auto",
+  };
+});
+
+const SummaryBox = styled(AccordionSummary)(() => {
+  const mobile = useMediaQuery("(max-width: 500px)");
+  return {
+    minHeight: mobile ? "36px !important" : "48px !important",
+    height: mobile ? "40px" : "48px",
+    "&.Mui-expanded": {
+      minHeight: mobile ? "36px !important" : "48px !important",
+      height: mobile ? "40px" : "48px",
+    },
+  };
+});
+
+const Title = styled(Typography)(() => {
+  const mobile = useMediaQuery("(max-width: 500px)");
+  return {
+    fontSize: mobile ? "14px" : "16px",
+  };
+});
 
 const CustomAccordion = ({
   title,
@@ -17,25 +46,12 @@ const CustomAccordion = ({
   const [expand, setExpand] = useState<boolean>(false);
   return (
     <Accordion expanded={expand}>
-      <AccordionSummary
-        expandIcon={expandIcon}
-        onClick={() => setExpand(!expand)}
-        sx={{
-          minHeight: "48px !important",
-          height: "48px",
-          "&.Mui-expanded": {
-            minHeight: "48px !important",
-            height: "48px",
-          },
-        }}
-      >
+      <SummaryBox expandIcon={expandIcon} onClick={() => setExpand(!expand)}>
         {titleIcon}
-        <Typography component="span" paddingX={2}>
-          {title}
-        </Typography>
-      </AccordionSummary>
+        <Title paddingX={2}>{title}</Title>
+      </SummaryBox>
       <Divider />
-      <AccordionDetails sx={{ maxHeight: "80vh" }}>{children}</AccordionDetails>
+      <DetailBox>{children}</DetailBox>
     </Accordion>
   );
 };

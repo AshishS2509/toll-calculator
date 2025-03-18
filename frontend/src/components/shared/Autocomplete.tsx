@@ -28,9 +28,7 @@ const CustomAutocomplete = <_P, T>({
       noOptionsText="Enter at least 3 characters"
       isOptionEqualToValue={(option, value) => option === value}
       getOptionLabel={getOptionLabel}
-      onInputChange={(_event, value) => {
-        onSearch?.(value);
-      }}
+      onInputChange={(_event, value) => onSearch?.(value)}
       onChange={onChange}
       renderInput={(params) => (
         <InputField

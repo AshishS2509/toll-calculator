@@ -1,8 +1,17 @@
-import { Fab } from "@mui/material";
+import { Fab, styled } from "@mui/material";
 import { useMapStore } from "../hooks/useMap";
 import getStyleUrl from "../config";
 import { AiFillMoon, AiFillSun } from "react-icons/ai";
 import { IThemeMode } from "../types/props.types";
+
+const ThemeButtom = styled(Fab)(({ theme }) => ({
+  position: "absolute",
+  top: 16,
+  right: 16,
+  backgroundColor: theme.palette.secondary.main,
+  color: theme.palette.secondary.contrastText,
+  zIndex: 1000,
+}));
 
 const ThemeSwitch = ({ themeMode, setThemeMode }: IThemeMode) => {
   const { map } = useMapStore();
@@ -16,24 +25,13 @@ const ThemeSwitch = ({ themeMode, setThemeMode }: IThemeMode) => {
     });
   };
   return (
-    <Fab
-      title="Toggle Theme"
-      onClick={toggleTheme}
-      size="small"
-      color="secondary"
-      sx={{
-        position: "absolute",
-        top: 16,
-        right: 16,
-        zIndex: 1000,
-      }}
-    >
+    <ThemeButtom title="Toggle Theme" onClick={toggleTheme} size="small">
       {themeMode === "light" ? (
         <AiFillMoon size={20} />
       ) : (
         <AiFillSun size={20} />
       )}
-    </Fab>
+    </ThemeButtom>
   );
 };
 

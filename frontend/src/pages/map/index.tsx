@@ -21,7 +21,6 @@ export default function Map() {
       minZoom: 2,
       maxZoom: 20,
       attributionControl: false,
-      pitch: 45,
       trackResize: true,
     });
     setMap(newStructure);
