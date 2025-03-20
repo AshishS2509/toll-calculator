@@ -2,25 +2,27 @@ import CustomAutocomplete from "./shared/Autocomplete";
 import { debounce } from "@mui/material";
 import { startTransition, SyntheticEvent, useActionState } from "react";
 import { fetchLocation } from "../api/api";
-import { IOptionFormat } from "../types/data.types";
 import { IGeocodingAutocompleteProps } from "../types/props.types";
+import { IAddress } from "../types/types";
 
 const GeocodingAutocomplete = ({
   name,
   onChange,
 }: IGeocodingAutocompleteProps) => {
   const [options, action, loading] = useActionState(
-    async (_prev: IOptionFormat[], query: string) => {
+    async (_prev: IAddress[], query: string) => {
+      if (!query) return [];
       const data = await fetchLocation(query);
-      const formattedData: IOptionFormat[] = data.map((location) => {
+      const formattedData: IAddress[] = data.map((location) => {
         return {
           address: location.place_name,
           lat: location.center[1],
           lng: location.center[0],
-          country: location.properties.country_code,
         };
       });
-      return formattedData;
+      return Array.from(
+        new Set(formattedData.map((loc) => JSON.stringify(loc)))
+      ).map((str) => JSON.parse(str));
     },
     []
   );
@@ -32,7 +34,7 @@ const GeocodingAutocomplete = ({
 
   const handleChange = (
     _: SyntheticEvent<Element, Event>,
-    val: IOptionFormat | null
+    val: IAddress | null
   ) => {
     onChange(val);
   };

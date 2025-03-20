@@ -20,7 +20,7 @@ http
         .end();
     } else if (ALLOWED_ORIGINS.includes(origin)) {
       res.setHeader("Access-Control-Allow-Origin", origin);
-      res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+      res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS, GET");
       res.setHeader("Access-Control-Allow-Headers", "Content-Type, x-api-key");
 
       // Handle preflight OPTIONS request

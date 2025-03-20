@@ -1,5 +1,4 @@
-import { IOptionFormat } from "./data.types";
-import { VehicleTypeKeys } from "./types";
+import { IAddress, VehicleTypeKeys } from "./types";
 
 export interface IThemeMode {
   themeMode: "light" | "dark";
@@ -24,7 +23,7 @@ export interface IAutocompleteProps<T> {
 
 export interface IGeocodingAutocompleteProps {
   name: string;
-  onChange: (val: IOptionFormat | null) => void;
+  onChange: (val: IAddress | null) => void;
 }
 
 export interface IVehicleAutocompleteProps {
