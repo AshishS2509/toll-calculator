@@ -32,6 +32,7 @@ const CustomAutocomplete = <_P, T>({
       onChange={onChange}
       renderInput={(params) => (
         <InputField
+          required
           name={name}
           label={name}
           onFocus={(event) => {
