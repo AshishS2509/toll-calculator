@@ -4,13 +4,12 @@ import { AiFillCaretDown, AiOutlineSearch } from "react-icons/ai";
 import GeocodingAutocomplete from "../../components/GeocodingAutocomplete";
 import VehicleAutocomplete from "../../components/VehicleAutocomplete";
 import { useSeatchStore } from "../../hooks/useSearchStore";
-import { IOptionFormat } from "../../types/data.types";
 import { IAddress, VehicleTypeKeys } from "../../types/types";
 import { useMapStore } from "../../hooks/useMap";
 import { useRef } from "react";
-import { Marker } from "maplibre-gl";
+import { LngLat, LngLatBounds, Marker } from "maplibre-gl";
 
-const StyledBox = styled(Box)(() => {
+const FormBox = styled(Box)(() => {
   const mobile = useMediaQuery("(max-width: 500px)");
   return {
     width: mobile ? "calc(100% - 32px)" : "25vw",
@@ -29,18 +28,20 @@ const Details = () => {
   const { map } = useMapStore();
 
   const setBounds = (currentFrom: IAddress, currentTo: IAddress) => {
-    map?.fitBounds(
-      [
-        [currentFrom.lng, currentFrom.lat],
-        [currentTo.lng, currentTo.lat],
-      ],
-      { padding: 100 }
-    );
+    const bounds = new LngLatBounds()
+      .extend([currentFrom.lng, currentFrom.lat])
+      .extend([currentTo.lng, currentTo.lat]);
+    map?.fitBounds(bounds, {
+      padding: 20,
+      duration: 1000,
+      linear: true,
+      animate: true,
+    });
   };
 
   const handleChange = (
     type: string,
-    location: IOptionFormat | null,
+    location: IAddress | null,
     vehicle: string | null
   ) => {
     switch (type) {
@@ -48,24 +49,33 @@ const Details = () => {
         if (location) {
           setFrom(location);
           if (fromRef.current)
-            fromRef.current.setLngLat([location.lng, location.lat]);
+            fromRef.current.setLngLat(new LngLat(location.lng, location.lat));
           else
             fromRef.current = new Marker()
-              .setLngLat([location.lng, location.lat])
+              .setLngLat(new LngLat(location.lng, location.lat))
               .addTo(map!);
           if (to) setBounds(location, to);
+          else
+            map?.flyTo({
+              center: [location.lng, location.lat],
+              zoom: 12,
+            });
         }
         break;
       case "To":
         if (location) {
           setTo(location);
           if (toRef.current)
-            toRef.current.setLngLat([location.lng, location.lat]);
+            toRef.current.setLngLat(new LngLat(location.lng, location.lat));
           else
             toRef.current = new Marker()
-              .setLngLat([location.lng, location.lat])
+              .setLngLat(new LngLat(location.lng, location.lat))
               .addTo(map!);
           if (from) setBounds(from, location);
+          else
+            map
+              ?.setCenter(new LngLat(location.lng, location.lat))
+              .zoomTo(12, { duration: 1000 });
         }
         break;
       case "Vehicle":
@@ -75,7 +85,7 @@ const Details = () => {
   };
 
   return (
-    <StyledBox>
+    <FormBox>
       <CustomAccordion
         title="Search"
         expandIcon={<AiFillCaretDown />}
@@ -97,12 +107,13 @@ const Details = () => {
           <Button
             variant="contained"
             onClick={() => console.log(from, to, vehicle)}
+            fullWidth
           >
             Get Route
           </Button>
         </Stack>
       </CustomAccordion>
-    </StyledBox>
+    </FormBox>
   );
 };
 

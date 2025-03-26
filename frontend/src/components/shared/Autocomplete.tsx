@@ -25,13 +25,14 @@ const CustomAutocomplete = <_P, T>({
       id={name}
       loading={loading}
       options={options}
-      noOptionsText="Enter at least 3 characters"
+      noOptionsText="No options"
       isOptionEqualToValue={(option, value) => option === value}
       getOptionLabel={getOptionLabel}
       onInputChange={(_event, value) => onSearch?.(value)}
       onChange={onChange}
       renderInput={(params) => (
         <InputField
+          required
           name={name}
           label={name}
           onFocus={(event) => {

@@ -5,7 +5,7 @@ import { AiFillMoon, AiFillSun } from "react-icons/ai";
 import { IThemeMode } from "../types/props.types";
 
 const ThemeButtom = styled(Fab)(({ theme }) => ({
-  position: "absolute",
+  position: "fixed",
   top: 16,
   right: 16,
   backgroundColor: theme.palette.secondary.main,
