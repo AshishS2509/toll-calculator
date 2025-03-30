@@ -1,16 +1,25 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { Map as Structure } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { Box, styled } from "@mui/material";
 import { useMapStore } from "../../hooks/useMap";
 import getStyleUrl from "../../config";
 
-const MapBox = styled(Box)(() => ({
-  height: "calc(100vh - 8px)",
-  width: "calc(100vw - 8px)",
-  borderRadius: "8px",
-  overflow: "hidden",
-}));
+const MapBox = styled(Box)(() => {
+  const [height, setHeight] = useState(window.innerHeight);
+
+  useEffect(() => {
+    window.addEventListener("resize", () => {
+      setHeight(window.innerHeight);
+    });
+  }, []);
+  return {
+    height: `calc(${height}px - 8px)`,
+    width: "calc(100vw - 8px)",
+    borderRadius: "8px",
+    overflow: "hidden",
+  };
+});
 
 export default function Map() {
   const mapContainer = useRef<HTMLDivElement | null>(null);
