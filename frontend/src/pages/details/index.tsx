@@ -1,13 +1,27 @@
-import { Box, Button, Stack, styled, useMediaQuery } from "@mui/material";
+import { Box, CircularProgress, styled, useMediaQuery } from "@mui/material";
 import CustomAccordion from "../../components/Accordion";
-import { AiFillCaretDown, AiOutlineSearch } from "react-icons/ai";
-import GeocodingAutocomplete from "../../components/GeocodingAutocomplete";
-import VehicleAutocomplete from "../../components/VehicleAutocomplete";
+import {
+  AiFillCaretDown,
+  AiOutlineLeft,
+  AiOutlineRight,
+  AiOutlineSearch,
+} from "react-icons/ai";
 import { useSeatchStore } from "../../hooks/useSearchStore";
-import { IAddress, VehicleTypeKeys } from "../../types/types";
 import { useMapStore } from "../../hooks/useMap";
-import { useRef } from "react";
-import { LngLat, LngLatBounds, Marker } from "maplibre-gl";
+import {
+  FormEvent,
+  startTransition,
+  useActionState,
+  useEffect,
+  useState,
+} from "react";
+import { fetchData } from "../../api/api";
+import { useTollData } from "../../hooks/useTollData";
+import decoder from "@mapbox/polyline";
+import { IPostData, IResponseData } from "../../types/data.types";
+import { useLoader } from "../../hooks/useLoader";
+import Form from "./Form";
+import DetailsPage from "./DetailsPage";
 
 const FormBox = styled(Box)(() => {
   const mobile = useMediaQuery("(max-width: 500px)");
@@ -22,96 +36,73 @@ const FormBox = styled(Box)(() => {
 });
 
 const Details = () => {
-  const { setFrom, setTo, setVehicle, from, to, vehicle } = useSeatchStore();
-  const fromRef = useRef<Marker | null>(null);
-  const toRef = useRef<Marker | null>(null);
-  const { map } = useMapStore();
+  const [openDetails, setOpenDetails] = useState(false);
 
-  const setBounds = (currentFrom: IAddress, currentTo: IAddress) => {
-    const bounds = new LngLatBounds()
-      .extend([currentFrom.lng, currentFrom.lat])
-      .extend([currentTo.lng, currentTo.lat]);
-    map?.fitBounds(bounds, {
-      padding: 20,
-      duration: 1000,
-      linear: true,
-      animate: true,
+  const { from, to, vehicle } = useSeatchStore();
+  const { setData } = useTollData();
+  const { setPolyline } = useMapStore();
+  const { setLoading } = useLoader();
+
+  const [data, dispatch, pending] = useActionState(
+    (_state: IResponseData | null, postData: IPostData | null) => {
+      if (!postData?.from || !postData?.to || !postData?.vehicle) return null;
+      const data = fetchData({
+        ...postData,
+      });
+      return data;
+    },
+    null
+  );
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    if (!from || !to || !vehicle) return;
+    startTransition(() => dispatch({ from, to, vehicle }));
+    setOpenDetails(true);
+  };
+
+  useEffect(() => {
+    if (!data) return;
+    const polylineArray = data.routes.map((route) => route.polyline);
+    polylineArray.forEach((polyline, idx) => {
+      const coordinates: [number, number][] = decoder
+        .decode(polyline)
+        .map((coord: [number, number]) => [coord[1], coord[0]]);
+      setPolyline(idx, coordinates);
     });
-  };
+    setData(data);
+  }, [data]);
 
-  const handleChange = (
-    type: string,
-    location: IAddress | null,
-    vehicle: string | null
-  ) => {
-    switch (type) {
-      case "From":
-        if (location) {
-          setFrom(location);
-          if (fromRef.current)
-            fromRef.current.setLngLat(new LngLat(location.lng, location.lat));
-          else
-            fromRef.current = new Marker()
-              .setLngLat(new LngLat(location.lng, location.lat))
-              .addTo(map!);
-          if (to) setBounds(location, to);
-          else
-            map?.flyTo({
-              center: [location.lng, location.lat],
-              zoom: 12,
-            });
-        }
-        break;
-      case "To":
-        if (location) {
-          setTo(location);
-          if (toRef.current)
-            toRef.current.setLngLat(new LngLat(location.lng, location.lat));
-          else
-            toRef.current = new Marker()
-              .setLngLat(new LngLat(location.lng, location.lat))
-              .addTo(map!);
-          if (from) setBounds(from, location);
-          else
-            map
-              ?.setCenter(new LngLat(location.lng, location.lat))
-              .zoomTo(12, { duration: 1000 });
-        }
-        break;
-      case "Vehicle":
-        setVehicle(vehicle as VehicleTypeKeys);
-        break;
-    }
-  };
+  useEffect(() => {
+    setLoading(pending);
+  }, [pending]);
 
   return (
     <FormBox>
       <CustomAccordion
-        title="Search"
+        title={openDetails ? "Details" : "Search"}
         expandIcon={<AiFillCaretDown />}
-        titleIcon={<AiOutlineSearch size={22} />}
+        titleIcon={
+          data ? (
+            openDetails ? (
+              <AiOutlineLeft size={22} onClick={() => setOpenDetails(false)} />
+            ) : (
+              <AiOutlineRight size={22} onClick={() => setOpenDetails(true)} />
+            )
+          ) : (
+            <AiOutlineSearch size={22} />
+          )
+        }
       >
-        <Stack spacing={2} pt={1}>
-          <GeocodingAutocomplete
-            name="From"
-            onChange={(location) => handleChange("From", location, null)}
-          />
-          <GeocodingAutocomplete
-            name="To"
-            onChange={(location) => handleChange("To", location, null)}
-          />
-          <VehicleAutocomplete
-            name="Vehicle"
-            onChange={(vehicle) => handleChange("Vehicle", null, vehicle)}
-          />
-          <Button
-            variant="contained"
-            onClick={() => console.log(from, to, vehicle)}
-            fullWidth
-          >
-            Get Route
-          </Button>
-        </Stack>
+        {openDetails ? (
+          pending ? (
+            <CircularProgress />
+          ) : (
+            <DetailsPage />
+          )
+        ) : (
+          <Form handleSubmit={handleSubmit} />
+        )}
       </CustomAccordion>
     </FormBox>
   );

@@ -30,3 +30,6 @@ export interface IVehicleAutocompleteProps {
   name: string;
   onChange: (val: VehicleTypeKeys | null) => void;
 }
+export interface IFormProps {
+  handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+}

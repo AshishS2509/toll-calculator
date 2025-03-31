@@ -3,6 +3,7 @@ import {
   AccordionDetails,
   AccordionSummary,
   Divider,
+  Stack,
   styled,
   Typography,
   useMediaQuery,
@@ -19,13 +20,12 @@ const DetailBox = styled(AccordionDetails)(() => {
 });
 
 const SummaryBox = styled(AccordionSummary)(() => {
-  const mobile = useMediaQuery("(max-width: 500px)");
   return {
-    minHeight: mobile ? "36px !important" : "48px !important",
-    height: mobile ? "40px" : "48px",
+    minHeight: "48px !important",
+    height: "48px",
     "&.Mui-expanded": {
-      minHeight: mobile ? "36px !important" : "48px !important",
-      height: mobile ? "40px" : "48px",
+      minHeight: "48px !important",
+      height: "48px",
     },
   };
 });
@@ -46,9 +46,14 @@ const CustomAccordion = ({
   const [expand, setExpand] = useState<boolean>(false);
   return (
     <Accordion expanded={expand}>
-      <SummaryBox expandIcon={expandIcon} onClick={() => setExpand(!expand)}>
+      <SummaryBox expandIcon={expandIcon}>
         {titleIcon}
-        <Title paddingX={2}>{title}</Title>
+        <Stack
+          style={{ paddingLeft: "8px", width: "100%" }}
+          onClick={() => setExpand(!expand)}
+        >
+          <Title paddingX={2}>{title}</Title>
+        </Stack>
       </SummaryBox>
       <Divider />
       <DetailBox>{children}</DetailBox>
