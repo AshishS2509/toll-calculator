@@ -1,4 +1,4 @@
-import { Box, CircularProgress, styled, useMediaQuery } from "@mui/material";
+import { Box, styled, useMediaQuery } from "@mui/material";
 import CustomAccordion from "../../components/Accordion";
 import {
   AiFillCaretDown,
@@ -22,6 +22,7 @@ import { IPostData, IResponseData } from "../../types/data.types";
 import { useLoader } from "../../hooks/useLoader";
 import Form from "./Form";
 import DetailsPage from "./DetailsPage";
+import { useSnackbar } from "../../hooks/useSnackbar";
 
 const FormBox = styled(Box)(() => {
   const mobile = useMediaQuery("(max-width: 500px)");
@@ -42,6 +43,7 @@ const Details = () => {
   const { setData } = useTollData();
   const { setPolyline } = useMapStore();
   const { setLoading } = useLoader();
+  const { setOpenSnakcbar } = useSnackbar();
 
   const [data, dispatch, pending] = useActionState(
     (_state: IResponseData | null, postData: IPostData | null) => {
@@ -49,6 +51,7 @@ const Details = () => {
       const data = fetchData({
         ...postData,
       });
+
       return data;
     },
     null
@@ -62,18 +65,24 @@ const Details = () => {
   };
 
   useEffect(() => {
-    if (!data) return;
+    console.log(data);
+    if (!data) return setOpenDetails(false);
     const polylineArray = data.routes.map((route) => route.polyline);
     polylineArray.forEach((polyline, idx) => {
       const coordinates: [number, number][] = decoder
         .decode(polyline)
         .map((coord: [number, number]) => [coord[1], coord[0]]);
-      setPolyline(idx, coordinates);
+      const name = data.routes[idx].summary.name;
+      setPolyline(name, coordinates);
     });
     setData(data);
   }, [data]);
 
   useEffect(() => {
+    if (!pending && !data) {
+      setOpenSnakcbar(true);
+      setOpenDetails(false);
+    }
     setLoading(pending);
   }, [pending]);
 
@@ -94,15 +103,7 @@ const Details = () => {
           )
         }
       >
-        {openDetails ? (
-          pending ? (
-            <CircularProgress />
-          ) : (
-            <DetailsPage />
-          )
-        ) : (
-          <Form handleSubmit={handleSubmit} />
-        )}
+        {openDetails ? <DetailsPage /> : <Form handleSubmit={handleSubmit} />}
       </CustomAccordion>
     </FormBox>
   );
