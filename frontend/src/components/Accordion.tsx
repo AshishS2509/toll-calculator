@@ -8,7 +8,6 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
-import { useState } from "react";
 import { IAccordionProps } from "../types/props.types";
 
 const DetailBox = styled(AccordionDetails)(() => {
@@ -43,15 +42,11 @@ const CustomAccordion = ({
   titleIcon,
   children,
 }: IAccordionProps) => {
-  const [expand, setExpand] = useState<boolean>(false);
   return (
-    <Accordion expanded={expand}>
+    <Accordion>
       <SummaryBox expandIcon={expandIcon}>
         {titleIcon}
-        <Stack
-          style={{ paddingLeft: "8px", width: "100%" }}
-          onClick={() => setExpand(!expand)}
-        >
+        <Stack style={{ paddingLeft: "8px", width: "100%" }}>
           <Title paddingX={2}>{title}</Title>
         </Stack>
       </SummaryBox>

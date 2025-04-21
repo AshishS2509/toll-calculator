@@ -3,7 +3,7 @@ import { IResponseData } from "../types/data.types";
 
 interface TollDataStore {
   data: IResponseData | undefined;
-  setData: (data: IResponseData) => void;
+  setData: (data: IResponseData | undefined) => void;
 }
 
 export const useTollData = create<TollDataStore>((set) => ({

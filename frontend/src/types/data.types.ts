@@ -44,6 +44,7 @@ export type Toll = {
   type: string;
   tagCost: number;
   tagPriCost: number;
+  name?: string;
   tagSecCost?: number | null;
   cashCost: number;
   licensePlateCost?: number | null;

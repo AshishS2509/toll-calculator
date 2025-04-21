@@ -18,14 +18,21 @@ export const fetchLocation = async (query: string) => {
 };
 
 export const fetchData = async (data: IPostData) => {
-  const response = await fetch("https://toll-api.onrender.com/calculate", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  });
-  return (await response.json()) as IResponseData;
+  try {
+    const response = await fetch("https://toll-api.onrender.com/calculate", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) throw new Error("API request failed");
+
+    return (await response?.json()) as IResponseData;
+  } catch (e) {
+    return null;
+  }
 };
 
 export const wakeupCall = () => fetch("https://toll-api.onrender.com/wakeup");
