@@ -60,6 +60,7 @@ const Details = () => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!from || !to || !vehicle) return;
+    setData(undefined);
     startTransition(() => dispatch({ from, to, vehicle }));
     setOpenDetails(true);
   };

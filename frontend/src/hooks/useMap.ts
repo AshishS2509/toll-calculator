@@ -37,4 +37,9 @@ export const useMapStore = create<MapStore>((set, get) => ({
       },
     });
   },
+  resetPolyline: () => {
+    const { map } = get();
+    if (!map) return;
+    map.redraw();
+  },
 }));
