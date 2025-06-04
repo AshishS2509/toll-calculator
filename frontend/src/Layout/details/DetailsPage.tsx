@@ -30,14 +30,22 @@ const DetailsPage = () => {
       {loading ? (
         <CircularProgress />
       ) : (
-        <span>
+        <span
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           Routes:{" "}
-          {data?.routes?.map((route: Routes) => {
+          {data?.routes?.map((route: Routes, idx) => {
             return (
               <Chip
-                key={route.summary.name}
+                key={new Date().getTime() + idx}
                 label={route.summary.name}
                 onClick={() => setCurrentRoute(route)}
+                style={{ margin: "4px" }}
               />
             );
           })}

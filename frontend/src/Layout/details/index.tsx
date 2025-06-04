@@ -2,8 +2,7 @@ import { Box, styled, useMediaQuery } from "@mui/material";
 import CustomAccordion from "../../components/Accordion";
 import {
   AiFillCaretDown,
-  AiOutlineLeft,
-  AiOutlineRight,
+  AiFillCaretUp,
   AiOutlineSearch,
 } from "react-icons/ai";
 import { useSeatchStore } from "../../hooks/useSearchStore";
@@ -13,6 +12,7 @@ import {
   startTransition,
   useActionState,
   useEffect,
+  // useRef,
   useState,
 } from "react";
 import { fetchData } from "../../api/api";
@@ -38,28 +38,35 @@ const FormBox = styled(Box)(() => {
 
 const Details = () => {
   const [openDetails, setOpenDetails] = useState(false);
+  // const accordionRef = useRef(null);
 
   const { from, to, vehicle } = useSeatchStore();
   const { setData } = useTollData();
-  const { setPolyline } = useMapStore();
+  const { setPolyline, addMarker } = useMapStore();
   const { setLoading } = useLoader();
   const { setOpenSnakcbar } = useSnackbar();
+  const mobile = useMediaQuery("(max-width: 500px)");
 
   const [data, dispatch, pending] = useActionState(
-    (_state: IResponseData | null, postData: IPostData | null) => {
+    async (_state: IResponseData | null, postData: IPostData | null) => {
       if (!postData?.from || !postData?.to || !postData?.vehicle) return null;
-      const data = fetchData({
-        ...postData,
-      });
-
-      return data;
+      try {
+        const response = await fetchData(postData);
+        if (!response) throw "Error fetching data";
+        return response;
+      } catch (error) {
+        console.error("Fetch Error:", error);
+        setOpenSnakcbar(true);
+        throw error; // so we can handle it in useEffect
+      }
     },
     null
   );
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (!from || !to || !vehicle) return;
+
     setData(undefined);
     startTransition(() => dispatch({ from, to, vehicle }));
     setOpenDetails(true);
@@ -67,42 +74,53 @@ const Details = () => {
 
   useEffect(() => {
     console.log(data);
-    if (!data) return setOpenDetails(false);
-    const polylineArray = data.routes.map((route) => route.polyline);
-    polylineArray.forEach((polyline, idx) => {
-      const coordinates: [number, number][] = decoder
-        .decode(polyline)
-        .map((coord: [number, number]) => [coord[1], coord[0]]);
-      const name = data.routes[idx].summary.name;
-      setPolyline(name, coordinates);
-    });
-    setData(data);
-  }, [data]);
+    const processFetchedData = async () => {
+      if (!data) return;
+
+      try {
+        const polylineArray = data.routes.map((route) => route.polyline);
+        polylineArray.forEach((polyline, idx) => {
+          const coordinates: [number, number][] = decoder
+            .decode(polyline)
+            .map(([lat, lng]) => [lng, lat]); // map correctly
+          const id = `${Date.now()}-${idx}`;
+          setPolyline(id, coordinates);
+        });
+        data.routes.forEach((route) => {
+          route.tolls.forEach((toll) => {
+            const { lat, lng } = toll;
+
+            if (lat && lng) {
+              addMarker([lng, lat]);
+            }
+            return;
+          });
+        });
+
+        setData(data);
+      } catch (error) {
+        console.error("Processing Error:", error);
+        setOpenDetails(false);
+        setOpenSnakcbar(true);
+      }
+    };
+
+    processFetchedData();
+  }, [data, setData, setPolyline, setOpenDetails, setOpenSnakcbar]);
 
   useEffect(() => {
     if (!pending && !data) {
-      setOpenSnakcbar(true);
       setOpenDetails(false);
     }
     setLoading(pending);
-  }, [pending]);
+  }, [pending, data, setLoading]);
 
   return (
     <FormBox>
       <CustomAccordion
         title={openDetails ? "Details" : "Search"}
-        expandIcon={<AiFillCaretDown />}
-        titleIcon={
-          data ? (
-            openDetails ? (
-              <AiOutlineLeft size={22} onClick={() => setOpenDetails(false)} />
-            ) : (
-              <AiOutlineRight size={22} onClick={() => setOpenDetails(true)} />
-            )
-          ) : (
-            <AiOutlineSearch size={22} />
-          )
-        }
+        expandIcon={mobile ? <AiFillCaretUp /> : <AiFillCaretDown />}
+        titleIcon={<AiOutlineSearch size={22} />}
       >
         {openDetails ? <DetailsPage /> : <Form handleSubmit={handleSubmit} />}
       </CustomAccordion>

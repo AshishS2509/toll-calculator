@@ -55,6 +55,8 @@ export type Toll = {
   tagPrimary: string[];
   start?: TollPoint;
   end?: TollPoint;
+  lat: number;
+  lng: number;
 };
 
 export type RouteSummary = {

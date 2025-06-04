@@ -1,5 +1,5 @@
 import { useState } from "react";
-import MainPage from "./pages";
+import MainPage from "./Layout";
 import { CssBaseline, GlobalStyles, ThemeProvider } from "@mui/material";
 import { darkTheme, lightTheme } from "./themes/theme";
 import ThemeSwitch from "./components/ThemeSwitch";
