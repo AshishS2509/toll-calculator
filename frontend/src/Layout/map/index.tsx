@@ -6,13 +6,14 @@ import { useMapStore } from "../../hooks/useMap";
 import getStyleUrl from "../../config";
 
 const MapBox = styled(Box)(() => {
-  const [height, setHeight] = useState(window.innerHeight);
+  const [height, setHeight] = useState(window.innerHeight - 1);
 
   useEffect(() => {
     window.addEventListener("resize", () => {
-      setHeight(window.innerHeight);
+      setHeight(window.innerHeight - 1);
     });
   }, []);
+  
   return {
     height: `calc(${height}px - 8px)`,
     width: "calc(100vw - 8px)",

@@ -2,26 +2,23 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  Box,
   Divider,
-  IconButton,
   Stack,
   styled,
   Typography,
   useMediaQuery,
 } from "@mui/material";
 import { IAccordionProps } from "../types/props.types";
-import { AiOutlineReload } from "react-icons/ai";
 
-const DetailBox = styled(AccordionDetails)(() => {
-  const mobile = useMediaQuery("(max-width: 500px)");
+const DetailBox = styled(AccordionDetails)(({ theme }) => {
+  const mobile = useMediaQuery(theme.breakpoints.down("sm"));
   return {
     maxHeight: mobile ? "33vh" : "80vh",
     overflowY: "auto",
   };
 });
 
-const SummaryBox = styled(AccordionSummary)(() => {
+const SummaryBox = styled(AccordionSummary)(({ theme }) => {
   return {
     minHeight: "48px !important",
     height: "48px",
@@ -29,11 +26,15 @@ const SummaryBox = styled(AccordionSummary)(() => {
       minHeight: "48px !important",
       height: "48px",
     },
+    [theme.breakpoints.down("sm")]: {
+      minHeight: "40px",
+      height: "40px",
+    },
   };
 });
 
-const Title = styled(Typography)(() => {
-  const mobile = useMediaQuery("(max-width: 500px)");
+const Title = styled(Typography)(({ theme }) => {
+  const mobile = useMediaQuery(theme.breakpoints.down("sm"));
   return {
     fontSize: mobile ? "14px" : "16px",
   };
@@ -44,17 +45,11 @@ const CustomAccordion = ({
   expandIcon,
   titleIcon,
   children,
+  ...props
 }: IAccordionProps) => {
   return (
-    <Accordion>
-      <Box position={"absolute"} top={20} left={6} zIndex={99}>
-        {
-          <IconButton sx={{ backgroundColor: "#1e1e1e" }}>
-            <AiOutlineReload />
-          </IconButton>
-        }
-      </Box>
-      <SummaryBox expandIcon={expandIcon}>
+    <Accordion {...props}>
+      <SummaryBox expandIcon={expandIcon} aria-controls="panel-content">
         {titleIcon}
         <Stack
           style={{ paddingLeft: "8px", width: "100%", position: "relative" }}

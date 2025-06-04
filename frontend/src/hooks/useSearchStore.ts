@@ -16,6 +16,8 @@ interface ISearchStore {
 
   vehicle: VehicleTypeKeys | null;
   setVehicle: (vehicle: VehicleTypeKeys) => void;
+
+  resetForm: () => void;
 }
 
 export const useSearchStore = create<ISearchStore>()(persist((set) => ({
@@ -39,6 +41,13 @@ export const useSearchStore = create<ISearchStore>()(persist((set) => ({
 
   vehicle: null,
   setVehicle: (vehicle) => set({ vehicle }),
+
+  resetForm:() => set({
+    from: null,
+    to: null,
+    waypoints: null,
+    vehicle: null,
+  })
 }),{
   name: "search-store",
   partialize: (state) => ({

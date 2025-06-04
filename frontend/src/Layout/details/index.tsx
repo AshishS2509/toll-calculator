@@ -5,7 +5,7 @@ import {
   AiFillCaretUp,
   AiOutlineSearch,
 } from "react-icons/ai";
-import { useSeatchStore } from "../../hooks/useSearchStore";
+import { useSearchStore } from "../../hooks/useSearchStore";
 import { useMapStore } from "../../hooks/useMap";
 import {
   FormEvent,
@@ -23,6 +23,7 @@ import { useLoader } from "../../hooks/useLoader";
 import Form from "./Form";
 import DetailsPage from "./DetailsPage";
 import { useSnackbar } from "../../hooks/useSnackbar";
+import Reset from "../../components/Reset";
 
 const FormBox = styled(Box)(() => {
   const mobile = useMediaQuery("(max-width: 500px)");
@@ -40,8 +41,8 @@ const Details = () => {
   const [openDetails, setOpenDetails] = useState(false);
   // const accordionRef = useRef(null);
 
-  const { from, to, vehicle } = useSeatchStore();
-  const { setData } = useTollData();
+  const { from, to, vehicle } = useSearchStore();
+  const { data: stateData, setData } = useTollData();
   const { setPolyline, addMarker } = useMapStore();
   const { setLoading } = useLoader();
   const { setOpenSnakcbar } = useSnackbar();
@@ -73,7 +74,6 @@ const Details = () => {
   };
 
   useEffect(() => {
-    console.log(data);
     const processFetchedData = async () => {
       if (!data) return;
 
@@ -87,11 +87,11 @@ const Details = () => {
           setPolyline(id, coordinates);
         });
         data.routes.forEach((route) => {
-          route.tolls.forEach((toll) => {
-            const { lat, lng } = toll;
+          route.tolls.forEach((toll, idx) => {
+            const { lat, lng, name } = toll;
 
             if (lat && lng) {
-              addMarker([lng, lat]);
+              addMarker(name || idx.toString(), [lng, lat]);
             }
             return;
           });
@@ -116,15 +116,19 @@ const Details = () => {
   }, [pending, data, setLoading]);
 
   return (
+    <>
     <FormBox>
       <CustomAccordion
         title={openDetails ? "Details" : "Search"}
         expandIcon={mobile ? <AiFillCaretUp /> : <AiFillCaretDown />}
         titleIcon={<AiOutlineSearch size={22} />}
       >
-        {openDetails ? <DetailsPage /> : <Form handleSubmit={handleSubmit} />}
+        {((pending && openDetails) || (openDetails && stateData) ) ? <DetailsPage /> : <Form handleSubmit={handleSubmit} />}
       </CustomAccordion>
     </FormBox>
+    
+        <Reset />
+    </>
   );
 };
 
