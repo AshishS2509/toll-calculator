@@ -2,18 +2,14 @@ import { Button, Stack } from "@mui/material";
 import { IFormProps } from "../../types/props.types";
 import GeocodingAutocomplete from "../../components/GeocodingAutocomplete";
 import VehicleAutocomplete from "../../components/VehicleAutocomplete";
-import { useSeatchStore } from "../../hooks/useSearchStore";
+import { useSearchStore } from "../../hooks/useSearchStore";
 import { IAddress, VehicleTypeKeys } from "../../types/types";
-import { LngLat, LngLatBounds, Marker } from "maplibre-gl";
+import { LngLat, LngLatBounds } from "maplibre-gl";
 import { useMapStore } from "../../hooks/useMap";
-import { useRef } from "react";
 
 const Form = ({ handleSubmit }: IFormProps) => {
-  const fromRef = useRef<Marker | null>(null);
-  const toRef = useRef<Marker | null>(null);
-
-  const { setFrom, setTo, setVehicle, from, to } = useSeatchStore();
-  const { map } = useMapStore();
+  const { setFrom, setTo, setVehicle, from, to } = useSearchStore();
+  const { map, addMarker } = useMapStore();
 
   const setBounds = (currentFrom: IAddress, currentTo: IAddress) => {
     const bounds = new LngLatBounds()
@@ -26,6 +22,7 @@ const Form = ({ handleSubmit }: IFormProps) => {
       animate: true,
     });
   };
+
   const handleChange = (
     type: string,
     location: IAddress | null,
@@ -35,12 +32,7 @@ const Form = ({ handleSubmit }: IFormProps) => {
       case "From":
         if (location) {
           setFrom(location);
-          if (fromRef.current)
-            fromRef.current.setLngLat(new LngLat(location.lng, location.lat));
-          else
-            fromRef.current = new Marker()
-              .setLngLat(new LngLat(location.lng, location.lat))
-              .addTo(map!);
+          addMarker("from", [location.lng, location.lat]);
           if (to) setBounds(location, to);
           else
             map?.flyTo({
@@ -52,12 +44,7 @@ const Form = ({ handleSubmit }: IFormProps) => {
       case "To":
         if (location) {
           setTo(location);
-          if (toRef.current)
-            toRef.current.setLngLat(new LngLat(location.lng, location.lat));
-          else
-            toRef.current = new Marker()
-              .setLngLat(new LngLat(location.lng, location.lat))
-              .addTo(map!);
+          addMarker("to", [location.lng, location.lat]);
           if (from) setBounds(from, location);
           else
             map

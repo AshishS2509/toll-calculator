@@ -10,6 +10,9 @@ const ThemeButtom = styled(Fab)(({ theme }) => ({
   right: 16,
   backgroundColor: theme.palette.secondary.main,
   color: theme.palette.secondary.contrastText,
+  ":hover":{
+        backgroundColor: theme.palette.secondary.dark,
+    },
   zIndex: 1000,
 }));
 

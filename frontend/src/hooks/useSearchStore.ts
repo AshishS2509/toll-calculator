@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { IAddress, VehicleTypeKeys } from "../types/types";
 import { shallow } from "zustand/shallow";
+import { persist } from "zustand/middleware";
 
 interface ISearchStore {
   from: IAddress | null;
@@ -15,9 +16,11 @@ interface ISearchStore {
 
   vehicle: VehicleTypeKeys | null;
   setVehicle: (vehicle: VehicleTypeKeys) => void;
+
+  resetForm: () => void;
 }
 
-export const useSeatchStore = create<ISearchStore>((set) => ({
+export const useSearchStore = create<ISearchStore>()(persist((set) => ({
   from: null,
   setFrom: (from) => set({ from }),
 
@@ -38,4 +41,25 @@ export const useSeatchStore = create<ISearchStore>((set) => ({
 
   vehicle: null,
   setVehicle: (vehicle) => set({ vehicle }),
+
+  resetForm:() => set({
+    from: null,
+    to: null,
+    waypoints: null,
+    vehicle: null,
+  })
+}),{
+  name: "search-store",
+  partialize: (state) => ({
+    from: state.from,
+    to: state.to,
+    waypoints: state.waypoints,
+    vehicle: state.vehicle,
+  }),
+  onRehydrateStorage: (state) => state ? () => ({
+    from: state.from || null,
+    to: state.to || null,
+    waypoints: state.waypoints || null,
+    vehicle: state.vehicle || null,
+  }) : undefined,
 }));

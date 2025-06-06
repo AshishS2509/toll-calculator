@@ -8,6 +8,7 @@ const Snackbar = () => {
       anchorOrigin={{ vertical: "top", horizontal: "center" }}
       transitionDuration={500}
       autoHideDuration={5000}
+      onClose={() => setOpenSnakcbar(false)}
       open={openSnakcbar}
       key={"topright"}
     >
