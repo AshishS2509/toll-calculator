@@ -41,9 +41,9 @@ const Details = () => {
   const [openDetails, setOpenDetails] = useState(false);
   // const accordionRef = useRef(null);
 
-  const { from, to, vehicle } = useSearchStore();
+  const { from, to, vehicle, resetForm } = useSearchStore();
   const { data: stateData, setData } = useTollData();
-  const { setPolyline, addMarker } = useMapStore();
+  const { setPolyline, addMarker, resetMap } = useMapStore();
   const { setLoading } = useLoader();
   const { setOpenSnakcbar } = useSnackbar();
   const mobile = useMediaQuery("(max-width: 500px)");
@@ -57,8 +57,11 @@ const Details = () => {
         return response;
       } catch (error) {
         console.error("Fetch Error:", error);
+        resetMap();
+        setOpenDetails(false);
+        resetForm();
         setOpenSnakcbar(true);
-        throw error; // so we can handle it in useEffect
+        return null// so we can handle it in useEffect
       }
     },
     null

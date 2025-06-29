@@ -8,11 +8,26 @@ import {
   Container,
   Divider,
   Typography,
+  Stack,
 } from "@mui/material";
 import { useLoader } from "../../hooks/useLoader";
 import { useTollData } from "../../hooks/useTollData";
 import { Routes } from "../../types/data.types";
 import { useEffect, useState } from "react";
+import { styled } from "@mui/material/styles";
+
+const RouteChip = styled(Chip)(({ theme }) => ({
+  cursor: "pointer",
+  margin: theme.spacing(0.5),
+  "&.MuiChip-filled": {
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.primary.contrastText,
+  },
+  "&.MuiChip-outlined": {
+    borderColor: theme.palette.primary.main,
+    color: theme.palette.primary.main,
+  },
+}));
 
 const DetailsPage = () => {
   const { loading } = useLoader();
@@ -20,69 +35,78 @@ const DetailsPage = () => {
   const [currentRoute, setCurrentRoute] = useState<Routes | null>(null);
 
   useEffect(() => {
-    if (data) {
+    if (data?.routes?.length) {
       setCurrentRoute(data.routes[0]);
     }
   }, [data]);
 
-  return (
-    <Box style={{ maxHeight: 400, display: "grid", placeItems: "center" }}>
-      {loading ? (
+  if (loading) {
+    return (
+      <Box sx={{ minHeight: 400, display: "flex", alignItems: "center", justifyContent: "center" }}>
         <CircularProgress />
-      ) : (
-        <span
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          Routes:{" "}
-          {data?.routes?.map((route: Routes, idx) => {
-            return (
-              <Chip
-                key={new Date().getTime() + idx}
-                label={route.summary.name}
-                onClick={() => setCurrentRoute(route)}
-                style={{ margin: "4px" }}
-              />
-            );
-          })}
-        </span>
-      )}
+      </Box>
+    );
+  }
+
+  if (!data?.routes?.length) {
+    return (
+      <Box sx={{ minHeight: 400, display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <Typography>No routes available.</Typography>
+      </Box>
+    );
+  }
+
+  return (
+    <Box sx={{ maxHeight: 600, display: "flex", flexDirection: "column", alignItems: "center", p: 2 }}>
+      <Stack direction="row" spacing={1} flexWrap="wrap" justifyContent="center" alignItems="center" mb={2}>
+        <Typography variant="subtitle1" sx={{ mr: 1 }}>
+          Routes:
+        </Typography>
+        {data.routes.map((route: Routes, idx) => (
+          <RouteChip
+            key={route.summary.name + idx}
+            label={route.summary.name}
+            color={currentRoute?.summary.name === route.summary.name ? "primary" : "default"}
+            onClick={() => setCurrentRoute(route)}
+            sx={{ m: 0.5, cursor: "pointer" }}
+            variant={currentRoute?.summary.name === route.summary.name ? "filled" : "outlined"}
+          />
+        ))}
+      </Stack>
       {currentRoute && (
-        <Card
-          style={{ width: "100%", border: "1px solid #ccc", marginTop: "8px" }}
-        >
+        <Card sx={{ width: "100%", maxWidth: 600, border: 1, borderColor: "#ccc", mt: 2 }}>
           <CardHeader
-            title={`${currentRoute?.tolls.length} Tolls on the way.`}
+            title={`${currentRoute.tolls.length} Toll${currentRoute.tolls.length !== 1 ? "s" : ""} on the way`}
+            sx={{ backgroundColor: "#f5f5f5" }}
           />
           <Divider />
           <CardContent>
-            {currentRoute?.tolls?.map((toll) => {
-              return (
-                <Container
-                  key={toll.id}
-                  style={{
-                    paddingTop: "4px",
-                    paddingBottom: "4px",
-                    marginTop: "8px",
-                    marginBottom: "8px",
-                    backgroundColor: "#3e3e3e",
-                    borderRadius: "4px",
-                  }}
-                >
-                  <Typography variant="body1">
-                    {toll.name ?? toll.start?.name}
-                  </Typography>
-                  <Typography variant="body2">
-                    Cash: {toll.cashCost} {toll.currency} | Tag: {toll.tagCost}{" "}
-                    {toll.currency}
-                  </Typography>
-                </Container>
-              );
-            })}
+            {currentRoute.tolls.length === 0 ? (
+              <Typography variant="body2" color="text.secondary">
+                No tolls on this route.
+              </Typography>
+            ) : (
+              <Stack spacing={2}>
+                {currentRoute.tolls.map((toll) => (
+                  <Container
+                    key={toll.id}
+                    sx={{
+                      py: 1,
+                      backgroundColor: "#f0f0f0",
+                      borderRadius: 1,
+                      boxShadow: 1,
+                    }}
+                  >
+                    <Typography variant="body1" fontWeight="bold">
+                      {toll.name ?? toll.start?.name ?? "Unnamed Toll"}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      Cash: {toll.cashCost} {toll.currency} | Tag: {toll.tagCost} {toll.currency}
+                    </Typography>
+                  </Container>
+                ))}
+              </Stack>
+            )}
           </CardContent>
         </Card>
       )}

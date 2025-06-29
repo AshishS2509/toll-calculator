@@ -31,6 +31,7 @@ export const fetchData = async (data: IPostData) => {
 
     return (await response?.json()) as IResponseData;
   } catch (e) {
+    console.error("Fetch Error:", e);
     return null;
   }
 };
