@@ -1,3 +1,4 @@
+import { AccordionProps } from "@mui/material";
 import { IAddress, VehicleTypeKeys } from "./types";
 
 export interface IThemeMode {
@@ -5,11 +6,11 @@ export interface IThemeMode {
   setThemeMode: React.Dispatch<React.SetStateAction<"light" | "dark">>;
 }
 
-export interface IAccordionProps {
+export interface IAccordionProps extends AccordionProps {
   title: string;
   titleIcon?: React.ReactNode;
   expandIcon?: React.ReactNode;
-  children: React.ReactNode;
+  children: NonNullable<React.ReactNode>;
 }
 
 export interface IAutocompleteProps<T> {
