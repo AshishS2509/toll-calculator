@@ -28,6 +28,6 @@
   "homepage": "https://github.com/AshishS2509/toll-calculator#readme",
   "devDependencies": {
     "@types/node": "^22.13.10",
-    "typescript": "^5.8.2"
+    "typescript": "^5.8.3"
   }
 }
